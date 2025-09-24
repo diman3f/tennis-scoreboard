@@ -3,11 +3,9 @@ package com.diman_3f.tennis_scoreboard.service;
 import com.diman_3f.tennis_scoreboard.entity.Player;
 import com.diman_3f.tennis_scoreboard.dao.PlayerDao;
 import com.diman_3f.tennis_scoreboard.model.ActiveMatch;
+import com.diman_3f.tennis_scoreboard.model.ScorePlayer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class MatchCreatorService {
 
@@ -21,7 +19,7 @@ public class MatchCreatorService {
         this.matches = new HashMap<>();
     }
 
-    public void createCurrentMatch(String namePlayer1, String namePlayer2) {
+    public UUID createCurrentMatch(String namePlayer1, String namePlayer2) {
 
         List<Player> players = playerDao.findPlayers();
         Player playerOne = null;
@@ -41,29 +39,24 @@ public class MatchCreatorService {
         //todo проверку ранее созданных игроков сделать в отдельном методе
         if (playerOne != null & playerTwo != null) {
 
-            // это пока не нужно так как по ТЗ создаем сначало матч без записи в БД, запись в бд матча занимается
-            // другой сервис
-//            try (Session session = UtilSessionFactory.getSession()) {
-//                Transaction transaction = session.beginTransaction();
-//
-//                Match match = Match.builder()
-//                        .player1(playerOne)
-//                        .player2(playerTwo)
-//                        .build();
-//                session.persist(match);
-//                transaction.commit();
+
             UUID uuid = UUID.randomUUID();
             this.uuid = uuid;
             ActiveMatch activeMatch = ActiveMatch.builder()
+                    .id(uuid)
                     .playerOneID(playerOne.getID())
                     .playerTwoID(playerTwo.getID())
-                    .score(new Score())
+                    .scorePlayerMap(new HashMap<>())
                     .build();
+            activeMatch.setScorePlayerOne(new ScorePlayer());
+            activeMatch.setScorePlayerTwo(new ScorePlayer());
             matches.put(uuid, activeMatch);
-            }
+            return uuid;
         }
+        throw new NoSuchElementException("Матч не создан");
+    }
 
-        public ActiveMatch getMatch(UUID uuid) {
+    public ActiveMatch getMatch(UUID uuid) {
         return matches.get(uuid);
     }
 

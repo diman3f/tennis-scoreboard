@@ -1,9 +1,11 @@
 package com.diman_3f.tennis_scoreboard.model;
 
 
-import com.diman_3f.tennis_scoreboard.entity.Player;
-import com.diman_3f.tennis_scoreboard.service.Score;
 import lombok.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,7 +14,19 @@ import lombok.*;
 @Builder
 public class ActiveMatch {
 
+    private UUID id;
     private Long playerOneID ;
     private Long playerTwoID ;
-    private Score score;
+    private ScorePlayer scorePlayerOne;
+    private ScorePlayer scorePlayerTwo;
+    private Map<Long, ScorePlayer> scorePlayerMap;
+
+    public ScorePlayer getByPlayerId(Long playerId) {
+        if(playerId.equals(playerOneID)) {
+            return scorePlayerOne;
+        } else {
+            return scorePlayerTwo;
+        }
+    }
+
 }
