@@ -32,17 +32,23 @@ public class MatchScoreCalculationService {
 
     public void upPoint(Long playerId, ActiveMatch match) {
         ScorePlayer scorePlayer = match.getByPlayerId(playerId);
-        if(isScoreTied(match)) {
-            System.out.println("привет из блока ничья");
+        if (isScorePointTied(match)) {
+            PointScoreCalculator pointScoreCalculator = new PointScoreCalculator(match);
+            pointScoreCalculator.upPointEqualsGame(playerId);
+            return;
         }
-
-        upPointPlayerId(playerId, scorePlayer);
-
-
+        if (isScoreGameTied(match)) {
+            PointScoreCalculator pointScoreCalculator = new PointScoreCalculator(match);
+            pointScoreCalculator.upGameEqualsSet(playerId);
+        } else {
+            upPointPlayerId(playerId, match);
+        }
 
     }
 
-    private void upPointPlayerId(Long playerId, ScorePlayer score) {
+
+    private void upPointPlayerId(Long playerId, ActiveMatch match) {
+        ScorePlayer score = match.getByPlayerId(playerId);
         if (score.getPoint() == 0) {
             score.setPoint(ONE_POINT);
         } else if (score.getPoint() == ONE_POINT) {
@@ -50,12 +56,12 @@ public class MatchScoreCalculationService {
         } else if (score.getPoint() == TWO_POINT) {
             score.setPoint(THREE_POINT);
         } else {
-            score.setPoint(0);
             upGamePlayerId(playerId, score);
         }
     }
 
     private void upGamePlayerId(Long playerId, ScorePlayer score) {
+        score.setPoint(0);
         score.setGame(score.getGame() + ONE_GAME);
     }
 
