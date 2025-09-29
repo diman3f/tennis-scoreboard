@@ -1,12 +1,9 @@
-package com.diman_3f.tennis_scoreboard;
+package com.diman_3f.tennis_scoreboard.service;
 
 import com.diman_3f.tennis_scoreboard.context.UtilSessionFactory;
-import com.diman_3f.tennis_scoreboard.dao.MatchDao;
 import com.diman_3f.tennis_scoreboard.dao.PlayerDao;
-import com.diman_3f.tennis_scoreboard.entity.Match;
 import com.diman_3f.tennis_scoreboard.entity.Player;
 import com.diman_3f.tennis_scoreboard.model.ActiveMatch;
-import com.diman_3f.tennis_scoreboard.service.MatchCreatorService;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
@@ -31,16 +28,12 @@ public class ModelCreator {
             Player player3 = Player.builder()
                     .name("Roman")
                     .build();
-//            Match match = Match.builder()
-//                    .player1(player1)
-//                    .player2(player3)
-//                    .winner(player1)
-//                    .build();
+
 
             session.persist(player1);
             session.persist(player2);
             session.persist(player3);
-//            session.persist(match);
+
 
             System.out.println(player1.getID() + " " + player1.getName());
             System.out.println(player2.getID() + " " + player2.getName());
@@ -55,14 +48,32 @@ public class ModelCreator {
         List<Player> players = new PlayerDao().findPlayers();
         for (Player player : players) {
             System.out.println(player.toString());
+            UUID id = matchCreatorService.createCurrentMatch("Ivan", "Oleg");
 
-            matchCreatorService.createCurrentMatch("Ivan", "Oleg");
+
+
+            MatchScoreCalculationService service = new MatchScoreCalculationService(matchCreatorService);
             UUID uuid = matchCreatorService.getUuid();
             ActiveMatch match = matchCreatorService.getMatch(uuid);
+            service.upPoint(1L, match);
+            service.upPoint(1L, match);
+            service.upPoint(1L, match);
+            service.upPoint(2L, match);
+            service.upPoint(2L, match);
+            service.upPoint(2L, match);
+            service.upPoint(2L, match);
+            service.upPoint(1L, match);
+            service.upPoint(1L, match);
+            service.upPoint(2L, match);
+            service.upPoint(1L, match);
+            service.upPoint(1L, match);
+            service.upPoint(2L, match);
+            service.upPoint(2L, match);
 
 
-        }
+
         }
     }
+}
 
 
