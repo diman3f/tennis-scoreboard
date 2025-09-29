@@ -14,20 +14,12 @@ public class MatchScoreCalculationService {
     private final static int THREE_POINT = 40;
     private final static int ONE_GAME = 1;
     private final static int ONE_SET = 1;
-
+    private final static int GAME_EQUALS = 6;
 
 
     public MatchScoreCalculationService(MatchCreatorService matchCreatorService) {
         this.matchCreatorService = matchCreatorService;
     }
-
-    public MatchScoreCalculationService() {
-
-    }
-
-
-    // если point player 1 == 40  point play 2 == 40 играем равно
-    //
 
 
     public void upPoint(Long playerId, ActiveMatch match) {
@@ -42,6 +34,7 @@ public class MatchScoreCalculationService {
             pointScoreCalculator.upGameEqualsSet(playerId);
         } else {
             upPointPlayerId(playerId, match);
+            upSetPlayerId(scorePlayer, match );
         }
 
     }
@@ -56,24 +49,49 @@ public class MatchScoreCalculationService {
         } else if (score.getPoint() == TWO_POINT) {
             score.setPoint(THREE_POINT);
         } else {
-            upGamePlayerId(playerId, score);
+            upGamePlayerId(score, match);
         }
     }
 
-    private void upGamePlayerId(Long playerId, ScorePlayer score) {
-        score.setPoint(0);
+    private void upGamePlayerId(ScorePlayer score, ActiveMatch match) {
+        match.getScorePlayerOne().setPoint(0);
+        match.getScorePlayerTwo().setPoint(0);
         score.setGame(score.getGame() + ONE_GAME);
     }
 
-
-    private boolean isScoreTied(ActiveMatch match) {
+    private void upSetPlayerId(ScorePlayer score, ActiveMatch match) {
         ScorePlayer scorePlayerOne = match.getScorePlayerOne();
         ScorePlayer scorePlayerTwo = match.getScorePlayerTwo();
-        if(scorePlayerOne.getPoint() == THREE_POINT && scorePlayerTwo.getPoint() == THREE_POINT){
+        int gameOne = scorePlayerOne.getGame();
+        int gameTwo = scorePlayerTwo.getGame();
+
+        if (scorePlayerOne.getGame() >= 6 || scorePlayerTwo.getGame() >= 6) {
+            if (gameOne - gameTwo >= 2 || gameTwo - gameOne >= 2) {
+                match.getScorePlayerOne().setPoint(0);
+                match.getScorePlayerTwo().setPoint(0);
+                match.getScorePlayerOne().setGame(0);
+                match.getScorePlayerTwo().setGame(0);
+                score.setSet(score.getSet() + ONE_SET);
+            }
+        }
+    }
+
+
+    private boolean isScorePointTied(ActiveMatch match) {
+        ScorePlayer scorePlayerOne = match.getScorePlayerOne();
+        ScorePlayer scorePlayerTwo = match.getScorePlayerTwo();
+        if (scorePlayerOne.getPoint() == THREE_POINT && scorePlayerTwo.getPoint() == THREE_POINT) {
             return true;
         } else return false;
     }
 
+    private boolean isScoreGameTied(ActiveMatch match) {
+        ScorePlayer scorePlayerOne = match.getScorePlayerOne();
+        ScorePlayer scorePlayerTwo = match.getScorePlayerTwo();
+        if (scorePlayerOne.getGame() == GAME_EQUALS && scorePlayerTwo.getGame() == GAME_EQUALS) {
+            return true;
+        } else return false;
+    }
 
 
 }
