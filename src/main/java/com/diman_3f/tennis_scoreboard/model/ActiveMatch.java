@@ -19,7 +19,7 @@ public class ActiveMatch {
     private Long playerTwoID ;
     private ScorePlayer scorePlayerOne;
     private ScorePlayer scorePlayerTwo;
-    private Map<Long, ScorePlayer> scorePlayerMap;
+
 
     public ScorePlayer getByPlayerId(Long playerId) {
         if(playerId.equals(playerOneID)) {
