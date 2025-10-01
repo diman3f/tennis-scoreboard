@@ -1,0 +1,8 @@
+GET http://localhost:8080/match-score
+Accept: application/json
+
+POST http://localhost:8080/new-match
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+namePlayerOne=Ivan&namePlayerTwo=Oleg
