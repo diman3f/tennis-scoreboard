@@ -7,6 +7,18 @@ import com.diman_3f.tennis_scoreboard.model.ScorePlayer;
 
 import java.util.*;
 
+/**
+ Класс для создания новых матчей для учета счета игры.
+
+ Функциональность:
+ Создает матч на основе переданных имен игроков из vue
+ Выдать матч по uuid
+
+ Взаимодействие с другими классами программы:
+ Контроллер получает доступ к активному матчу через uuid матча
+ Через контроллер передаем id игрока для начисления point
+
+ */
 public class MatchCreatorService {
 
     private PlayerDao playerDao;
@@ -21,40 +33,21 @@ public class MatchCreatorService {
 
     public UUID createCurrentMatch(String namePlayer1, String namePlayer2) {
 
-        List<Player> players = playerDao.findPlayers();
-        Player playerOne = null;
-        Player playerTwo = null;
-        for (Player player : players) {
-            if (player.getName() == namePlayer1) {
-                playerOne = player;
-                break;
-            }
-        }
-        for (Player player : players) {
-            if (player.getName() == namePlayer2) {
-                playerTwo = player;
-                break;
-            }
-        }
-        //todo проверку ранее созданных игроков сделать в отдельном методе
-        if (playerOne != null & playerTwo != null) {
-
+        Player playerOne = playerDao.findByName(namePlayer1);
+        Player playerTwo = playerDao.findByName(namePlayer2);
 
             UUID uuid = UUID.randomUUID();
             this.uuid = uuid;
             ActiveMatch activeMatch = ActiveMatch.builder()
                     .id(uuid)
-                    .playerOneID(playerOne.getID())
-                    .playerTwoID(playerTwo.getID())
-                    .scorePlayerMap(new HashMap<>())
+                    .playerOneID(playerOne.getId())
+                    .playerTwoID(playerTwo.getId())
                     .build();
             activeMatch.setScorePlayerOne(new ScorePlayer());
             activeMatch.setScorePlayerTwo(new ScorePlayer());
             matches.put(uuid, activeMatch);
             return uuid;
         }
-        throw new NoSuchElementException("Матч не создан");
-    }
 
     public ActiveMatch getMatch(UUID uuid) {
         return matches.get(uuid);
@@ -64,3 +57,4 @@ public class MatchCreatorService {
         return uuid;
     }
 }
+
