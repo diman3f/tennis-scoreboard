@@ -16,8 +16,8 @@ public class Main {
 
 
         MatchCreatorService matchCreatorService = new MatchCreatorService(new PlayerDao());
-
-        UUID id = matchCreatorService.createCurrentMatch("Ivan", "Oleg");
+        matchCreatorService.createCurrentMatch("Ivan", "Oleg");
+        UUID id = matchCreatorService.getUuid();
         System.out.println(id);
 
 

@@ -31,7 +31,7 @@ public class MatchCreatorService {
         this.matches = new HashMap<>();
     }
 
-    public UUID createCurrentMatch(String namePlayer1, String namePlayer2) {
+    public void createCurrentMatch(String namePlayer1, String namePlayer2) {
 
         Player playerOne = playerDao.findByName(namePlayer1);
         Player playerTwo = playerDao.findByName(namePlayer2);
@@ -46,7 +46,6 @@ public class MatchCreatorService {
             activeMatch.setScorePlayerOne(new ScorePlayer());
             activeMatch.setScorePlayerTwo(new ScorePlayer());
             matches.put(uuid, activeMatch);
-            return uuid;
         }
 
     public ActiveMatch getMatch(UUID uuid) {
