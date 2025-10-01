@@ -3,9 +3,19 @@ package com.diman_3f.tennis_scoreboard.model;
 
 import lombok.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
+
+
+/**
+ * Класс для хранения состояния текущего матча для двух игроков
+ * Изменение состояния происходит через изменение ScorePlayer другими классами
+ *
+ * Изменяемые части класса:
+ * Не изменяемые части класса:
+ * Ограничения:
+ * команда из двух игроков
+ * имя команды, а не имя игрока
+ */
 
 @Getter
 @Setter
@@ -15,14 +25,14 @@ import java.util.UUID;
 public class ActiveMatch {
 
     private UUID id;
-    private Long playerOneID ;
-    private Long playerTwoID ;
+    private int playerOneID ;
+    private int playerTwoID ;
     private ScorePlayer scorePlayerOne;
     private ScorePlayer scorePlayerTwo;
 
 
-    public ScorePlayer getByPlayerId(Long playerId) {
-        if(playerId.equals(playerOneID)) {
+    public ScorePlayer getByPlayerId(int playerId) {
+        if(playerId == playerOneID) {
             return scorePlayerOne;
         } else {
             return scorePlayerTwo;
@@ -30,3 +40,5 @@ public class ActiveMatch {
     }
 
 }
+
+

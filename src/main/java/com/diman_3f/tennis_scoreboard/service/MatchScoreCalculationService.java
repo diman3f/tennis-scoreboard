@@ -5,6 +5,10 @@ import com.diman_3f.tennis_scoreboard.model.ScorePlayer;
 
 import java.util.UUID;
 
+/**
+ * класс
+ */
+
 public class MatchScoreCalculationService {
 
     private UUID uuid;
@@ -22,7 +26,7 @@ public class MatchScoreCalculationService {
     }
 
 
-    public void upPoint(Long playerId, ActiveMatch match) {
+    public void upPoint(int playerId, ActiveMatch match) {
         ScorePlayer scorePlayer = match.getByPlayerId(playerId);
         if (isScorePointTied(match)) {
             PointScoreCalculator pointScoreCalculator = new PointScoreCalculator(match);
@@ -40,7 +44,7 @@ public class MatchScoreCalculationService {
     }
 
 
-    private void upPointPlayerId(Long playerId, ActiveMatch match) {
+    private void upPointPlayerId(int playerId, ActiveMatch match) {
         ScorePlayer score = match.getByPlayerId(playerId);
         if (score.getPoint() == 0) {
             score.setPoint(ONE_POINT);
@@ -75,7 +79,6 @@ public class MatchScoreCalculationService {
             }
         }
     }
-
 
     private boolean isScorePointTied(ActiveMatch match) {
         ScorePlayer scorePlayerOne = match.getScorePlayerOne();
