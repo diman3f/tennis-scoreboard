@@ -1,4 +1,4 @@
-package com.diman_3f.tennis_scoreboard.servlet;
+package com.diman_3f.tennis_scoreboard.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

@@ -1,7 +1,7 @@
-package com.diman_3f.tennis_scoreboard.service;
+package com.diman_3f.tennis_scoreboard.services;
 
-import com.diman_3f.tennis_scoreboard.model.ActiveMatch;
-import com.diman_3f.tennis_scoreboard.model.ScorePlayer;
+import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
+import com.diman_3f.tennis_scoreboard.models.ScorePlayer;
 
 import java.util.UUID;
 

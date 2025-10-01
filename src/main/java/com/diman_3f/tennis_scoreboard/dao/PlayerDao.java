@@ -1,6 +1,6 @@
 package com.diman_3f.tennis_scoreboard.dao;
 
-import com.diman_3f.tennis_scoreboard.entity.Player;
+import com.diman_3f.tennis_scoreboard.entities.Player;
 import com.diman_3f.tennis_scoreboard.context.UtilSessionFactory;
 import jakarta.persistence.Query;
 import org.hibernate.Session;

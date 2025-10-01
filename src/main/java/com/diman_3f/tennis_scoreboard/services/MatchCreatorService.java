@@ -1,9 +1,9 @@
-package com.diman_3f.tennis_scoreboard.service;
+package com.diman_3f.tennis_scoreboard.services;
 
-import com.diman_3f.tennis_scoreboard.entity.Player;
+import com.diman_3f.tennis_scoreboard.entities.Player;
 import com.diman_3f.tennis_scoreboard.dao.PlayerDao;
-import com.diman_3f.tennis_scoreboard.model.ActiveMatch;
-import com.diman_3f.tennis_scoreboard.model.ScorePlayer;
+import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
+import com.diman_3f.tennis_scoreboard.models.ScorePlayer;
 
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package com.diman_3f.tennis_scoreboard.entity;
+package com.diman_3f.tennis_scoreboard.entities;
 
 import jakarta.persistence.*;
 import lombok.*;

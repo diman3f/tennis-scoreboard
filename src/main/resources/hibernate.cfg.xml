@@ -11,7 +11,7 @@
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
-        <mapping class="com.diman_3f.tennis_scoreboard.entity.Player"/>
-        <mapping class="com.diman_3f.tennis_scoreboard.entity.Match"/>
+        <mapping class="com.diman_3f.tennis_scoreboard.entities.Player"/>
+        <mapping class="com.diman_3f.tennis_scoreboard.entities.Match"/>
     </session-factory>
 </hibernate-configuration>

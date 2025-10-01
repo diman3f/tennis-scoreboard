@@ -1,6 +1,6 @@
 package com.diman_3f.tennis_scoreboard.dao;
 
-import com.diman_3f.tennis_scoreboard.entity.Match;
+import com.diman_3f.tennis_scoreboard.entities.Match;
 import com.diman_3f.tennis_scoreboard.context.UtilSessionFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

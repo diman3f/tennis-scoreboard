@@ -1,8 +1,8 @@
-package com.diman_3f.tennis_scoreboard.servlet;
+package com.diman_3f.tennis_scoreboard.controllers;
 
 import com.diman_3f.tennis_scoreboard.dao.PlayerDao;
-import com.diman_3f.tennis_scoreboard.service.ApplicationStateInstaller;
-import com.diman_3f.tennis_scoreboard.service.MatchCreatorService;
+import com.diman_3f.tennis_scoreboard.services.ApplicationStateInstaller;
+import com.diman_3f.tennis_scoreboard.services.MatchCreatorService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

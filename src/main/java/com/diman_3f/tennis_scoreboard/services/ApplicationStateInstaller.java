@@ -1,7 +1,7 @@
-package com.diman_3f.tennis_scoreboard.service;
+package com.diman_3f.tennis_scoreboard.services;
 
 import com.diman_3f.tennis_scoreboard.context.UtilSessionFactory;
-import com.diman_3f.tennis_scoreboard.entity.Player;
+import com.diman_3f.tennis_scoreboard.entities.Player;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

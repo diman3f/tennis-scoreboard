@@ -1,10 +1,10 @@
 package com.diman_3f.tennis_scoreboard;
 
 import com.diman_3f.tennis_scoreboard.dao.PlayerDao;
-import com.diman_3f.tennis_scoreboard.model.ActiveMatch;
-import com.diman_3f.tennis_scoreboard.service.ApplicationStateInstaller;
-import com.diman_3f.tennis_scoreboard.service.MatchCreatorService;
-import com.diman_3f.tennis_scoreboard.service.MatchScoreCalculationService;
+import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
+import com.diman_3f.tennis_scoreboard.services.ApplicationStateInstaller;
+import com.diman_3f.tennis_scoreboard.services.MatchCreatorService;
+import com.diman_3f.tennis_scoreboard.services.MatchScoreCalculationService;
 
 import java.util.UUID;
 

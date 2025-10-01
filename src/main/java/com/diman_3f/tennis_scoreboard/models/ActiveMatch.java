@@ -1,4 +1,4 @@
-package com.diman_3f.tennis_scoreboard.model;
+package com.diman_3f.tennis_scoreboard.models;
 
 
 import lombok.*;
