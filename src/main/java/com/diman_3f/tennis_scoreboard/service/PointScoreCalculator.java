@@ -16,7 +16,7 @@ public class PointScoreCalculator {
         this.scoreTwo = activeMatch.getScorePlayerTwo();
     }
 
-    public void upPointEqualsGame(Long playerId) {
+    public void upPointEqualsGame(int playerId) {
         ScorePlayer score = activeMatch.getByPlayerId(playerId);
         score.setEqualsGame(score.getEqualsGame() + ONE_POINT);
         if (isPlayerWinInGameEquals()) {
@@ -37,7 +37,7 @@ public class PointScoreCalculator {
         return hasWinnerGame(resultOne, resultTwo);
     }
 
-    public void upGameEqualsSet(Long playerId) {
+    public void upGameEqualsSet(int playerId) {
         ScorePlayer score = activeMatch.getByPlayerId(playerId);
         score.setEqualsGame(score.getEqualsGame() + ONE_GAME);
         if (isPlayerWinInSetEquals()) {

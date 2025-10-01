@@ -16,8 +16,8 @@ import lombok.*;
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    @Column(name = "id")
-    private Long ID;
-    @Column(name="name", unique = true)
+    @Column(name = "ID")
+    private int id;
+    @Column(name="Name", unique = true)
     private String name;
 }
