@@ -1,75 +1,60 @@
 package com.diman_3f.tennis_scoreboard.services;
 
+import com.diman_3f.tennis_scoreboard.TennisPoints;
 import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
 import com.diman_3f.tennis_scoreboard.models.ScorePlayer;
 
-public class PointScoreCalculator {
-    private ActiveMatch activeMatch;
-    private final int ONE_POINT = 1;
-    private final int ONE_GAME = 1;
-    private ScorePlayer scoreOne;
-    private ScorePlayer scoreTwo;
+/**
+ * Класс для изменения счета ScorePlayer при "равно" и "тайбрейке"
+ */
 
-    public PointScoreCalculator(ActiveMatch activeMatch) {
-        this.activeMatch = activeMatch;
-        this.scoreOne = activeMatch.getScorePlayerOne();
-        this.scoreTwo = activeMatch.getScorePlayerTwo();
+public class PointScoreCalculator extends BaseScoreCalculator {
+
+
+    public PointScoreCalculator(ActiveMatch match) {
+        super(match);
     }
 
-    public void upPointEqualsGame(int playerId) {
-        ScorePlayer score = activeMatch.getByPlayerId(playerId);
-        score.setEqualsGame(score.getEqualsGame() + ONE_POINT);
-        if (isPlayerWinInGameEquals()) {
+    public void upGamePlayerScore(int playerId) {
+        ScorePlayer score = match.getByPlayerId(playerId);
+        score.setEqualsGame(score.getEqualsGame() + TennisPoints.ONE_POINT.getValue());
+        if (hasWinInGameEquals()) {
             scoreOne.setPoint(0);
             scoreOne.setEqualsGame(0);
             scoreTwo.setPoint(0);
             scoreTwo.setEqualsGame(0);
-            score.setGame(1);
+            score.setGame(TennisPoints.GAME.getValue());
         }
     }
 
-    private boolean isPlayerWinInGameEquals() {
+    private boolean hasWinInGameEquals() {
         int equalsGameOne = scoreOne.getEqualsGame();
         int equalsGameTwo = scoreTwo.getEqualsGame();
         int resultOne = equalsGameOne - equalsGameTwo;
         int resultTwo = equalsGameTwo - equalsGameOne;
+        return resultOne >= 2 || resultTwo >= 2;
 
-        return hasWinnerGame(resultOne, resultTwo);
+
     }
 
-    public void upGameEqualsSet(int playerId) {
-        ScorePlayer score = activeMatch.getByPlayerId(playerId);
-        score.setEqualsGame(score.getEqualsGame() + ONE_GAME);
-        if (isPlayerWinInSetEquals()) {
+    public void upSetPlayerScore(int playerId) {
+        ScorePlayer score = match.getByPlayerId(playerId);
+        score.setEqualsGame(score.getEqualsGame() + TennisPoints.GAME.getValue());
+        if (hasWinnerTieBreak()) {
             scoreOne.setGame(0);
             scoreTwo.setGame(0);
             scoreOne.setEqualsGame(0);
             scoreTwo.setEqualsGame(0);
-            score.setSet(1);
+            score.setSet(TennisPoints.SET.getValue());
         }
     }
 
-    private boolean isPlayerWinInSetEquals() {
-
+    private boolean hasWinnerTieBreak() {
         int equalsGameOne = scoreOne.getEqualsGame();
         int equalsGameTwo = scoreTwo.getEqualsGame();
-
-        return hasWinnerSet(equalsGameOne, equalsGameTwo);
-    }
-
-    private boolean hasWinnerGame(int equalsGameOne, int equalsGameTwo) {
         int resultOne = equalsGameOne - equalsGameTwo;
         int resultTwo = equalsGameTwo - equalsGameOne;
-        if (resultOne >= 2 || resultTwo >= 2) {
-            return true;
-        }
-        return false;
-    }
 
-
-    private boolean hasWinnerSet(int equalsGameOne, int equalsGameTwo) {
-        int resultOne = equalsGameOne - equalsGameTwo;
-        int resultTwo = equalsGameTwo - equalsGameOne;
         if (equalsGameOne >= 7 || equalsGameTwo >= 7) {
             if (resultOne >= 2 || resultTwo >= 2) {
                 return true;

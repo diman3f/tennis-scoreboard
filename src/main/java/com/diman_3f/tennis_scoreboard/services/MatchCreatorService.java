@@ -43,8 +43,6 @@ public class MatchCreatorService {
                     .playerOneID(playerOne.getId())
                     .playerTwoID(playerTwo.getId())
                     .build();
-            activeMatch.setScorePlayerOne(new ScorePlayer());
-            activeMatch.setScorePlayerTwo(new ScorePlayer());
             matches.put(uuid, activeMatch);
         }
 

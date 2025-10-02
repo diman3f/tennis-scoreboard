@@ -1,99 +1,89 @@
 package com.diman_3f.tennis_scoreboard.services;
 
+import com.diman_3f.tennis_scoreboard.TennisPoints;
 import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
 import com.diman_3f.tennis_scoreboard.models.ScorePlayer;
 
-import java.util.UUID;
 
 /**
- * класс
+ * класс для изменения полей счета ScorePlayer в текущем матче
  */
 
-public class MatchScoreCalculationService {
+public class MatchScoreCalculationService extends BaseScoreCalculator {
 
-    private UUID uuid;
-    private MatchCreatorService matchCreatorService;
-    private final static int ONE_POINT = 15;
-    private final static int TWO_POINT = 30;
-    private final static int THREE_POINT = 40;
-    private final static int ONE_GAME = 1;
-    private final static int ONE_SET = 1;
-    private final static int GAME_EQUALS = 6;
-
-
-    public MatchScoreCalculationService(MatchCreatorService matchCreatorService) {
-        this.matchCreatorService = matchCreatorService;
+    public MatchScoreCalculationService(ActiveMatch match) {
+        super(match);
     }
 
-
-    public void upPoint(int playerId, ActiveMatch match) {
+    public void upPoint(int playerId) {
         ScorePlayer scorePlayer = match.getByPlayerId(playerId);
-        if (isScorePointTied(match)) {
+        if (isScorePointTied()) {
             PointScoreCalculator pointScoreCalculator = new PointScoreCalculator(match);
-            pointScoreCalculator.upPointEqualsGame(playerId);
+            pointScoreCalculator.upGamePlayerScore(playerId);
             return;
         }
-        if (isScoreGameTied(match)) {
+        if (isScoreGameTied()) {
             PointScoreCalculator pointScoreCalculator = new PointScoreCalculator(match);
-            pointScoreCalculator.upGameEqualsSet(playerId);
+            pointScoreCalculator.upSetPlayerScore(playerId);
         } else {
-            upPointPlayerId(playerId, match);
-            upSetPlayerId(scorePlayer, match );
+            upPointPlayerId(playerId);
+            upSetPlayerId(scorePlayer);
         }
-
     }
 
 
-    private void upPointPlayerId(int playerId, ActiveMatch match) {
+    private void upPointPlayerId(int playerId) {
         ScorePlayer score = match.getByPlayerId(playerId);
-        if (score.getPoint() == 0) {
-            score.setPoint(ONE_POINT);
-        } else if (score.getPoint() == ONE_POINT) {
-            score.setPoint(TWO_POINT);
-        } else if (score.getPoint() == TWO_POINT) {
-            score.setPoint(THREE_POINT);
+        if (TennisPoints.ZERO.getValue() == score.getPoint()) {
+            score.setPoint(TennisPoints.ONE_POINT.getValue());
+        } else if (TennisPoints.ONE_POINT.getValue() == score.getPoint()) {
+            score.setPoint(TennisPoints.TWO_POINT.getValue());
+        } else if (TennisPoints.TWO_POINT.getValue() == score.getPoint()) {
+            score.setPoint(TennisPoints.THREE_POINT.getValue());
         } else {
-            upGamePlayerId(score, match);
+            upGamePlayerId(score);
         }
     }
 
-    private void upGamePlayerId(ScorePlayer score, ActiveMatch match) {
-        match.getScorePlayerOne().setPoint(0);
-        match.getScorePlayerTwo().setPoint(0);
-        score.setGame(score.getGame() + ONE_GAME);
+    private void upGamePlayerId(ScorePlayer score) {
+        scoreOne.setPoint(0);
+        scoreTwo.setPoint(0);
+        score.setGame(score.getGame() + TennisPoints.GAME.getValue());
     }
 
-    private void upSetPlayerId(ScorePlayer score, ActiveMatch match) {
-        ScorePlayer scorePlayerOne = match.getScorePlayerOne();
-        ScorePlayer scorePlayerTwo = match.getScorePlayerTwo();
-        int gameOne = scorePlayerOne.getGame();
-        int gameTwo = scorePlayerTwo.getGame();
+    private void upSetPlayerId(ScorePlayer score) {
 
-        if (scorePlayerOne.getGame() >= 6 || scorePlayerTwo.getGame() >= 6) {
+        if (hasWinnerInSet()) {
+            scoreOne.setPoint(0);
+            scoreTwo.setPoint(0);
+            scoreOne.setGame(0);
+            scoreTwo.setGame(0);
+            score.setSet(score.getSet() + TennisPoints.SET.getValue());
+        }
+    }
+
+    private boolean hasWinnerInSet() {
+        int gameOne = scoreOne.getGame();
+        int gameTwo = scoreTwo.getGame();
+        if (gameOne >= 6 || gameTwo >= 6) {
             if (gameOne - gameTwo >= 2 || gameTwo - gameOne >= 2) {
-                match.getScorePlayerOne().setPoint(0);
-                match.getScorePlayerTwo().setPoint(0);
-                match.getScorePlayerOne().setGame(0);
-                match.getScorePlayerTwo().setGame(0);
-                score.setSet(score.getSet() + ONE_SET);
+                return true;
             }
         }
+        return false;
     }
 
-    private boolean isScorePointTied(ActiveMatch match) {
+    private boolean isScorePointTied() {
         ScorePlayer scorePlayerOne = match.getScorePlayerOne();
         ScorePlayer scorePlayerTwo = match.getScorePlayerTwo();
-        if (scorePlayerOne.getPoint() == THREE_POINT && scorePlayerTwo.getPoint() == THREE_POINT) {
-            return true;
-        } else return false;
+        return TennisPoints.THREE_POINT.getValue() == scorePlayerOne.getPoint() &&
+                TennisPoints.THREE_POINT.getValue() == scorePlayerTwo.getPoint();
     }
 
-    private boolean isScoreGameTied(ActiveMatch match) {
-        ScorePlayer scorePlayerOne = match.getScorePlayerOne();
-        ScorePlayer scorePlayerTwo = match.getScorePlayerTwo();
-        if (scorePlayerOne.getGame() == GAME_EQUALS && scorePlayerTwo.getGame() == GAME_EQUALS) {
-            return true;
-        } else return false;
+    private boolean isScoreGameTied() {
+
+        return TennisPoints.GAME_EQUALS.getValue() == scoreOne.getGame() &&
+                TennisPoints.GAME_EQUALS.getValue() == scoreTwo.getGame();
     }
 
 

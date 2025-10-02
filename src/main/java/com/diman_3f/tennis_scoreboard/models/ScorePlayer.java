@@ -18,4 +18,5 @@ public class ScorePlayer {
     private int set = 0;
     private int game = 0;
     private int point = 0;
+
 }
