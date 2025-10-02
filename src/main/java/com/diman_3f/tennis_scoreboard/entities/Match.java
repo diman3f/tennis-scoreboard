@@ -12,7 +12,7 @@ import lombok.*;
 @ToString
 
 @Entity
-@Table(name = "Matchs")
+@Table(name = "Matches")
 public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
