@@ -3,6 +3,7 @@ package com.diman_3f.tennis_scoreboard;
 import com.diman_3f.tennis_scoreboard.dao.PlayerDao;
 import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
 import com.diman_3f.tennis_scoreboard.services.ApplicationStateInstaller;
+import com.diman_3f.tennis_scoreboard.services.BaseScoreCalculator;
 import com.diman_3f.tennis_scoreboard.services.MatchCreatorService;
 import com.diman_3f.tennis_scoreboard.services.MatchScoreCalculationService;
 
@@ -20,18 +21,31 @@ public class Main {
         UUID id = matchCreatorService.getUuid();
         System.out.println(id);
 
-
-        MatchScoreCalculationService service = new MatchScoreCalculationService(matchCreatorService);
+        MatchScoreCalculationService service = new MatchScoreCalculationService(matchCreatorService.getMatch(id));
         UUID uuid = matchCreatorService.getUuid();
         ActiveMatch match = matchCreatorService.getMatch(uuid);
-        service.upPoint(1, match);
-        service.upPoint(1, match);
-        service.upPoint(1, match);
-        service.upPoint(1, match);
-        service.upPoint(1, match);
-        service.upPoint(1, match);
-        service.upPoint(1, match);
-        service.upPoint(1, match);
+
+        System.out.println();
+        service.upPoint(1);
+        service.upPoint(1);
+        service.upPoint(1);
+        service.upPoint(1);
+        service.upPoint(1);
+        service.upPoint(1);
+        service.upPoint(1);
+        service.upPoint(1);
+        service.upPoint(1);
+        service.upPoint(1);
+        service.upPoint(1);
+        service.upPoint(2);
+        service.upPoint(2);
+        service.upPoint(2);
+        service.upPoint(2);
+        service.upPoint(2);
+        service.upPoint(2);
+        System.out.println();
+
+
 
 
     }
