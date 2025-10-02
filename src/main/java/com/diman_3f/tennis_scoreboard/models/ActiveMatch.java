@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Класс для хранения состояния текущего матча для двух игроков
  * Изменение состояния происходит через изменение ScorePlayer другими классами
- *
+ * <p>
  * Изменяемые части класса:
  * Не изменяемые части класса:
  * Ограничения:
@@ -25,14 +25,16 @@ import java.util.UUID;
 public class ActiveMatch {
 
     private UUID id;
-    private int playerOneID ;
-    private int playerTwoID ;
-    private ScorePlayer scorePlayerOne;
-    private ScorePlayer scorePlayerTwo;
+    private int playerOneID;
+    private int playerTwoID;
+    @Builder.Default
+    private ScorePlayer scorePlayerOne = new ScorePlayer();
+    @Builder.Default
+    private ScorePlayer scorePlayerTwo = new ScorePlayer();
 
 
     public ScorePlayer getByPlayerId(int playerId) {
-        if(playerId == playerOneID) {
+        if (playerId == playerOneID) {
             return scorePlayerOne;
         } else {
             return scorePlayerTwo;
