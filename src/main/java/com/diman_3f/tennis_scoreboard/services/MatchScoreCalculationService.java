@@ -1,6 +1,7 @@
 package com.diman_3f.tennis_scoreboard.services;
 
 import com.diman_3f.tennis_scoreboard.TennisPoints;
+import com.diman_3f.tennis_scoreboard.TennisRuleThreshold;
 import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
 import com.diman_3f.tennis_scoreboard.models.ScorePlayer;
 
@@ -27,10 +28,9 @@ public class MatchScoreCalculationService extends BaseScoreCalculator {
             pointScoreCalculator.upSetPlayerScore(playerId);
         } else {
             upPointPlayerId(playerId);
-            upSetPlayerId(scorePlayer);
+            upSetInScore(scorePlayer);
         }
     }
-
 
     private void upPointPlayerId(int playerId) {
         ScorePlayer score = match.getByPlayerId(playerId);
@@ -46,31 +46,42 @@ public class MatchScoreCalculationService extends BaseScoreCalculator {
     }
 
     private void upGamePlayerId(ScorePlayer score) {
-        scoreOne.setPoint(0);
-        scoreTwo.setPoint(0);
+        scoreOne.setPoint(TennisPoints.ZERO.getValue());
+        scoreTwo.setPoint(TennisPoints.ZERO.getValue());
         score.setGame(score.getGame() + TennisPoints.GAME.getValue());
     }
 
-    private void upSetPlayerId(ScorePlayer score) {
-
+    private void upSetInScore(ScorePlayer score) {
         if (hasWinnerInSet()) {
-            scoreOne.setPoint(0);
-            scoreTwo.setPoint(0);
-            scoreOne.setGame(0);
-            scoreTwo.setGame(0);
+            scoreOne.setPoint(TennisPoints.ZERO.getValue());
+            scoreTwo.setPoint(TennisPoints.ZERO.getValue());
+            scoreOne.setGame(TennisPoints.ZERO.getValue());
+            scoreTwo.setGame(TennisPoints.ZERO.getValue());
             score.setSet(score.getSet() + TennisPoints.SET.getValue());
         }
     }
 
+    // набранно ли минимальное количество геймов на счете чтобы начислить сет
+    // выполнено ли условие по разнице геймов для начисления сета
+
     private boolean hasWinnerInSet() {
         int gameOne = scoreOne.getGame();
         int gameTwo = scoreTwo.getGame();
-        if (gameOne >= 6 || gameTwo >= 6) {
-            if (gameOne - gameTwo >= 2 || gameTwo - gameOne >= 2) {
+        if (gameOne >= TennisRuleThreshold.MIN_GAME_TO_WIN_SET.getValue() ||
+                gameTwo >= TennisRuleThreshold.MIN_GAME_TO_WIN_SET.getValue()) {
+            if (gameOne - gameTwo >= TennisRuleThreshold.MIN_DIFFERENT_POINT_TO_WIN_SET.getValue() ||
+                    gameTwo - gameOne >= TennisRuleThreshold.MIN_DIFFERENT_POINT_TO_WIN_SET.getValue()) {
                 return true;
             }
         }
         return false;
+    }
+
+    private boolean hasMinGameOnScoreToWinSet(ScorePlayer score) {
+        return score.getGame() >= TennisRuleThreshold.MIN_GAME_TO_WIN_SET.getValue();
+    }
+    private boolean isRuleByDifferentGameDone(ScorePlayer score) {
+       return score.getGame() - scoreTwo.getGame() >= TennisRuleThreshold.MIN_GAME_TO_WIN_SET.getValue();
     }
 
     private boolean isScorePointTied() {
@@ -81,10 +92,7 @@ public class MatchScoreCalculationService extends BaseScoreCalculator {
     }
 
     private boolean isScoreGameTied() {
-
         return TennisPoints.GAME_EQUALS.getValue() == scoreOne.getGame() &&
                 TennisPoints.GAME_EQUALS.getValue() == scoreTwo.getGame();
     }
-
-
 }

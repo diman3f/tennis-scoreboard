@@ -1,6 +1,7 @@
 package com.diman_3f.tennis_scoreboard.services;
 
 import com.diman_3f.tennis_scoreboard.TennisPoints;
+import com.diman_3f.tennis_scoreboard.TennisRuleThreshold;
 import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
 import com.diman_3f.tennis_scoreboard.models.ScorePlayer;
 
@@ -17,12 +18,12 @@ public class PointScoreCalculator extends BaseScoreCalculator {
 
     public void upGamePlayerScore(int playerId) {
         ScorePlayer score = match.getByPlayerId(playerId);
-        score.setEqualsGame(score.getEqualsGame() + TennisPoints.ONE_POINT.getValue());
+        score.setEqualsGame(score.getEqualsGame() + TennisPoints.EQUALS_GAME.getValue());
         if (hasWinInGameEquals()) {
-            scoreOne.setPoint(0);
-            scoreOne.setEqualsGame(0);
-            scoreTwo.setPoint(0);
-            scoreTwo.setEqualsGame(0);
+            scoreOne.setPoint(TennisPoints.ZERO.getValue());
+            scoreOne.setEqualsGame(TennisPoints.ZERO.getValue());
+            scoreTwo.setPoint(TennisPoints.ZERO.getValue());
+            scoreTwo.setEqualsGame(TennisPoints.ZERO.getValue());
             score.setGame(TennisPoints.GAME.getValue());
         }
     }
@@ -32,7 +33,8 @@ public class PointScoreCalculator extends BaseScoreCalculator {
         int equalsGameTwo = scoreTwo.getEqualsGame();
         int resultOne = equalsGameOne - equalsGameTwo;
         int resultTwo = equalsGameTwo - equalsGameOne;
-        return resultOne >= 2 || resultTwo >= 2;
+        return resultOne >= TennisRuleThreshold.MIN_DIFFERENT_POINT_TO_WIN_GAME.getValue() ||
+                resultTwo >= TennisRuleThreshold.MIN_DIFFERENT_POINT_TO_WIN_GAME.getValue();
 
 
     }
@@ -41,10 +43,10 @@ public class PointScoreCalculator extends BaseScoreCalculator {
         ScorePlayer score = match.getByPlayerId(playerId);
         score.setEqualsGame(score.getEqualsGame() + TennisPoints.GAME.getValue());
         if (hasWinnerTieBreak()) {
-            scoreOne.setGame(0);
-            scoreTwo.setGame(0);
-            scoreOne.setEqualsGame(0);
-            scoreTwo.setEqualsGame(0);
+            scoreOne.setGame(TennisPoints.ZERO.getValue());
+            scoreTwo.setGame(TennisPoints.ZERO.getValue());
+            scoreOne.setEqualsGame(TennisPoints.ZERO.getValue());
+            scoreTwo.setEqualsGame(TennisPoints.ZERO.getValue());
             score.setSet(TennisPoints.SET.getValue());
         }
     }
@@ -55,8 +57,10 @@ public class PointScoreCalculator extends BaseScoreCalculator {
         int resultOne = equalsGameOne - equalsGameTwo;
         int resultTwo = equalsGameTwo - equalsGameOne;
 
-        if (equalsGameOne >= 7 || equalsGameTwo >= 7) {
-            if (resultOne >= 2 || resultTwo >= 2) {
+        if (equalsGameOne >= TennisRuleThreshold.MIN_POINT_TO_WIN_TIE_BREAK.getValue() ||
+                equalsGameTwo >= TennisRuleThreshold.MIN_POINT_TO_WIN_TIE_BREAK.getValue()) {
+            if (resultOne >= TennisRuleThreshold.MIN_DIFFERENT_GAME_TO_WIN_TIE_BREAK.getValue() ||
+                    resultTwo >= TennisRuleThreshold.MIN_DIFFERENT_GAME_TO_WIN_TIE_BREAK.getValue() ) {
                 return true;
             }
         }
