@@ -1,6 +1,7 @@
 package com.diman_3f.tennis_scoreboard.models;
 
 
+import com.diman_3f.tennis_scoreboard.StateMatch;
 import lombok.*;
 
 import java.util.UUID;
@@ -24,13 +25,16 @@ import java.util.UUID;
 @Builder
 public class ActiveMatch {
 
-    private UUID id;
     private int playerOneID;
     private int playerTwoID;
     @Builder.Default
     private ScorePlayer scorePlayerOne = new ScorePlayer();
     @Builder.Default
     private ScorePlayer scorePlayerTwo = new ScorePlayer();
+    private boolean isActive;
+    private boolean isTieBreak;
+    private boolean isGameEquals;
+
 
 
     public ScorePlayer getByPlayerId(int playerId) {

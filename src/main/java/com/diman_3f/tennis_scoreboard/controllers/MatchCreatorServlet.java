@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.UUID;
 
 /**
  * создаем новый активный матч и редиректимся на другой сервлет, который обслуживает созданный матч
@@ -29,12 +30,11 @@ public class MatchCreatorServlet extends HttpServlet {
         String playerNameTwo = req.getParameter("namePlayerTwo");
 
 
-        MatchCreatorService matchCreatorService = new MatchCreatorService(new PlayerDao());
-        matchCreatorService.createCurrentMatch(playerNameOne, playerNameTwo);
-        String uuid = String.valueOf(matchCreatorService.getUuid());
-
-        String uuidMatch = URLEncoder.encode(uuid, "UTF-8");
-        String path = req.getContextPath() + "/match-score?uuid=" + uuidMatch;
+        MatchCreatorService matchCreatorService = new MatchCreatorService();
+        matchCreatorService.setPlayerDao(new PlayerDao());
+        UUID uuidMatch = matchCreatorService.createCurrentMatch(playerNameOne, playerNameTwo);
+        String uuid = URLEncoder.encode(String.valueOf(uuidMatch), "UTF-8");
+        String path = req.getContextPath() + "/match-score?uuid=" + uuid;
         resp.sendRedirect(path);
 
     }
