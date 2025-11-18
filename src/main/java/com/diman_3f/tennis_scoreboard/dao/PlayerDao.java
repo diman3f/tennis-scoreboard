@@ -47,7 +47,7 @@ public class PlayerDao {
                 }
             }
         }
-        throw new NoSuchElementException(String.format("Игрок с именем %s", namePlayer + " не найден"));
+        throw new NoSuchElementException(String.format("Player name %s", namePlayer + " not found"));
     }
 
 }

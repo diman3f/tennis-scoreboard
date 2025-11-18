@@ -38,13 +38,7 @@ public class MatchCreatorService {
         int idPlayerTwo = playerDao.findByName(namePlayer2).getId();
 
         UUID uuid = UUID.randomUUID();
-        ActiveMatch activeMatch = ActiveMatch.builder()
-                .playerOneID(idPlayerOne) //todo варик заменить на имена, чтобы не делать лишние запросы сверху
-                .playerTwoID(idPlayerTwo) //todo еще варик создать отдельный класс для инициализации ActiveMatch (OngoingMatch)
-                .isActive(true)
-                .isTieBreak(false)
-                .isGameEquals(false)
-                .build();
+        ActiveMatch activeMatch = new ActiveMatch(idPlayerOne, idPlayerTwo);
         matches.put(uuid, activeMatch);
         return uuid;
     }

@@ -8,14 +8,14 @@ public enum TennisPoints {
     GAME_EQUALS(6),
     GAME(1),
     SET(1),
-    ZERO(0);
+    EQUALS_GAME(1),
+    ZERO(0),
+    WINNER_SET(2);
 
     private int value;
-
     TennisPoints(int value) {
         this.value = value;
     }
-
     public int getValue() {
         return value;
     }
