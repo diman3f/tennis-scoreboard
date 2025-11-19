@@ -23,7 +23,7 @@
         </div>
         <div>
             <nav class="nav-links">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="/home">Home</a>
                 <a class="nav-link" href="#">Matches</a>
             </nav>
         </div>
@@ -35,12 +35,12 @@
             <h1>Start new match</h1>
             <div class="new-match-image"></div>
             <div class="form-container center">
-                <form method="post" action="#">
-                    <p style="color: red;">Sample error message</p>
-                    <label class="label-player" for="playerOne">Player one</label>
-                    <input class="input-player" placeholder="Name" type="text" required title="Enter a name">
-                    <label class="label-player" for="playerTwo">Player two</label>
-                    <input class="input-player" placeholder="Name" type="text" required title="Enter a name">
+                <form method="post" action="/new-match">
+                    <%--@declare id="playerone"--%><%--@declare id="playertwo"--%><p style="color: #ff0000;">Sample error message</p>
+                    <label class="label-player" for="playerOne">Player ONE</label>
+                    <input class="input-player" placeholder="Name" type="text" name="nameOne">
+                    <label class="label-player" for="playerTwo">Player TWO</label>
+                    <input class="input-player" placeholder="Name" type="text" name="nameTwo">
                     <input class="form-button" type="submit" value="Start">
                 </form>
             </div>
@@ -54,3 +54,4 @@
 </footer>
 </body>
 </html>
+

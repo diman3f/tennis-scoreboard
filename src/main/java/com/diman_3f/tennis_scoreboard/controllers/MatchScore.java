@@ -13,13 +13,8 @@ import java.io.PrintWriter;
 public class MatchScore extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setHeader("Access-Control-Allow-Origin", "*");
-        resp.setContentType("application/html");
-        resp.setCharacterEncoding("UTF-8");
         req.setAttribute("uuid", req.getParameter("uuid"));
-
         getServletContext().getRequestDispatcher("/match-score.jsp").forward(req,resp);
-
         }
 
     @Override

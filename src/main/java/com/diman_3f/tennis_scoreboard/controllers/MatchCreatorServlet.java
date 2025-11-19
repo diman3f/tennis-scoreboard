@@ -32,22 +32,25 @@ public class MatchCreatorServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 
+        ApplicationStateInstaller installer = new ApplicationStateInstaller();
+        installer.initializeDefaultDatabase();
+
+        // получить имена из тела post запроса
+
+        String playerNameOne = req.getParameter("nameOne");
+        String playerNameTwo = req.getParameter("nameTwo");
 
 
 
-//        ApplicationStateInstaller installer = new ApplicationStateInstaller();
-//        installer.initializeDefaultDatabase();
-//
-//        String playerNameOne = req.getParameter("namePlayerOne");
-//        String playerNameTwo = req.getParameter("namePlayerTwo");
-//
-//
-//        MatchCreatorService matchCreatorService = new MatchCreatorService();
-//        matchCreatorService.setPlayerDao(new PlayerDao());
-//        UUID uuidMatch = matchCreatorService.createCurrentMatch(playerNameOne, playerNameTwo);
-//        String uuid = URLEncoder.encode(String.valueOf(uuidMatch), "UTF-8");
-//        String path = req.getContextPath() + "/match-score?uuid=" + uuid;
-//        resp.sendRedirect(path);
+
+
+        MatchCreatorService matchCreatorService = new MatchCreatorService();
+        matchCreatorService.setPlayerDao(new PlayerDao());
+        UUID uuidMatch = matchCreatorService.createCurrentMatch(playerNameOne, playerNameTwo);
+        String uuid = URLEncoder.encode(String.valueOf(uuidMatch), "UTF-8");
+
+        String path = req.getContextPath() + "/match-score?uuid=" + uuid;
+        resp.sendRedirect(path);
 
     }
 }
