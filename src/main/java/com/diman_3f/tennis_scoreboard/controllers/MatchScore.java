@@ -1,5 +1,6 @@
 package com.diman_3f.tennis_scoreboard.controllers;
 
+import com.diman_3f.tennis_scoreboard.utils.JspHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,7 +15,8 @@ public class MatchScore extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("uuid", req.getParameter("uuid"));
-        getServletContext().getRequestDispatcher("/match-score.jsp").forward(req,resp);
+        getServletContext().getRequestDispatcher(JspHelper.getPath("match-score"))
+                .forward(req,resp);
         }
 
     @Override
