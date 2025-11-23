@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
+@AllArgsConstructor
 
 public class ScoreDto {
     private int playerOneID;

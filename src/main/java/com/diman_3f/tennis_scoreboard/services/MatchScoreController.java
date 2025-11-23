@@ -32,11 +32,11 @@ public class MatchScoreController {
     }
 
 
+    public void addPoint(String uuid) {
 
-    public void action(ActiveMatch match) {
-
-            Match tennisMatchEntity = matchMapper.matchToTennisMatchEntity(match);
-            finishedMatchesPersistenceService.saveMatch(tennisMatchEntity);
+        ActiveMatch match = matchCreatorService.getMatch(uuid);
+        Match tennisMatchEntity = matchMapper.matchToTennisMatchEntity(match);
+        finishedMatchesPersistenceService.saveMatch(tennisMatchEntity);
 
         //преоброзовать в ScoreModelFinishedDto и вернуть для отображения на vue
     }

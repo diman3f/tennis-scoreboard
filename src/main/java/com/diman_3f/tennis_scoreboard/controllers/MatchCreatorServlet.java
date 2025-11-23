@@ -42,8 +42,6 @@ public class MatchCreatorServlet extends HttpServlet {
 
 
 
-
-
         MatchCreatorService matchCreatorService = new MatchCreatorService();
         matchCreatorService.setPlayerDao(new PlayerDao());
         UUID uuidMatch = matchCreatorService.createCurrentMatch(playerNameOne, playerNameTwo);

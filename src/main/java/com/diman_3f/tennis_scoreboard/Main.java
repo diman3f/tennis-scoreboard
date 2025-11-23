@@ -17,12 +17,14 @@ public class Main {
         matchCreatorService.setPlayerDao(new PlayerDao());
         UUID uuid = matchCreatorService.createCurrentMatch("Ivan", "Oleg");
 
-        ActiveMatch match = matchCreatorService.getMatch(uuid);
+
+        ActiveMatch match = matchCreatorService.getMatch(String.valueOf(uuid));
 
         MatchScoreCalculationService service = new MatchScoreCalculationService(match);
 
         match.setStateMatch(3,5,1,0,0,0, TennisMatchState.REGULAR_STATE);
         service.upPoint(1);
+
         System.out.println();
 
 
@@ -32,7 +34,7 @@ public class Main {
         FinishedMatchesPersistenceService finished = new FinishedMatchesPersistenceService(new JPAMatchDao());
 
         MatchScoreController controller = new MatchScoreController(matchCreatorService,service,finished);
-        controller.action(match);
+        controller.addPoint(String.valueOf(uuid));
         System.out.println();
 
 

@@ -34,7 +34,7 @@
 </header>
 <main>
     <div class="container">
-        <h1>Current match</h1>
+        <h1>Current match ${requestScope.uuid}</h1>
         <div class="current-match-image"></div>
         <section class="score">
             <table class="table">
@@ -48,21 +48,28 @@
                 </thead>
                 <tbody>
                 <tr class="player1">
-                    <td class="table-text">Rafael Nadal</td>
-                    <td class="table-text">2</td>
-                    <td class="table-text">4</td>
-                    <td class="table-text">40</td>
+                    <td class="table-text">${requestScope.id}</td>
+                    <td class="table-text">${requestScope.dto.setOne}</td>
+                    <td class="table-text">${requestScope.dto.gameOne}</td>
+                    <td class="table-text">${requestScope.dto.pointOne}</td>
                     <td class="table-text">
-                        <div class="score-btn">Score</div>
+                        <form method="post" , action="/match-score?uuid=${requestScope.uuid}">
+                            <input type="hidden" name="playerId" value="${requestScope.dto.playerOneID}">
+                            <button type="submit" class="score-btn">Score</button>
+                        </form>
                     </td>
                 </tr>
                 <tr class="player2">
-                    <td class="table-text">Roger Federer</td>
-                    <td class="table-text">2</td>
-                    <td class="table-text">3</td>
-                    <td class="table-text">15</td>
+                    <td class="table-text">${requestScope.id}</td>
+                    <td class="table-text">${requestScope.dto.setTwo}</td>
+                    <td class="table-text">${requestScope.dto.gameTwo}</td>
+                    <td class="table-text">${requestScope.dto.pointTwo}</td>
                     <td class="table-text">
-                        <div class="score-btn">Score</div>
+                        <form method="post" action="/match-score?uuid=${requestScope.uuid}">
+                            <input type="hidden" name="playerId" value="${requestScope.dto.playerTwoID}">
+                            <button type="submit" class="score-btn">Score</button>
+                        </form>
+
                     </td>
                 </tr>
                 </tbody>
@@ -72,7 +79,8 @@
 </main>
 <footer>
     <div class="footer">
-        <p>&copy; Tennis Scoreboard, project from <a href="https://zhukovsd.github.io/java-backend-learning-course/">zhukovsd/java-backend-learning-course</a> roadmap.</p>
+        <p>&copy; Tennis Scoreboard, project from <a href="https://zhukovsd.github.io/java-backend-learning-course/">zhukovsd/java-backend-learning-course</a>
+            roadmap.</p>
     </div>
 </footer>
 </body>

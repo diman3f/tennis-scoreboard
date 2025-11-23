@@ -43,7 +43,8 @@ public class MatchCreatorService {
         return uuid;
     }
 
-    public ActiveMatch getMatch(UUID uuid) {
+    public ActiveMatch getMatch(String uuid) {
+
         return matches.get(uuid);
     }
 
