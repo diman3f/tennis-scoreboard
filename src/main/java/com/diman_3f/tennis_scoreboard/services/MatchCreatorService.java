@@ -1,5 +1,6 @@
 package com.diman_3f.tennis_scoreboard.services;
 
+import com.diman_3f.tennis_scoreboard.context.ServiceLocator;
 import com.diman_3f.tennis_scoreboard.dao.PlayerDao;
 import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
 
@@ -25,12 +26,11 @@ public class MatchCreatorService {
 
 
     public MatchCreatorService() {
+        this.playerDao = ServiceLocator.getService(PlayerDao.class);
         this.matches = new HashMap<>();
     }
 
-    public void setPlayerDao(PlayerDao playerDao) {
-        this.playerDao = playerDao;
-    }
+
 
     public UUID createCurrentMatch(String namePlayer1, String namePlayer2) {
 
@@ -44,8 +44,7 @@ public class MatchCreatorService {
     }
 
     public ActiveMatch getMatch(String uuid) {
-
-        return matches.get(uuid);
+        return matches.get(UUID.fromString(uuid));
     }
 
     public void deleteMatchByUUID(UUID uuid) {

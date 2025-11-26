@@ -32,12 +32,12 @@ public class ScoreDtoFormatter {
         int pointTwo = match.getPointPlayer(idPlayerTwo);
 
         return ScoreDto.builder()
-                .playerOneID(idPlayerOne)
+                .playerOneId(idPlayerOne)
                 .pointOne(getStringPoint(pointOne))
                 .gameOne(match.getGamePlayer(idPlayerOne))
                 .setOne(match.getSetOnePlayer())
 
-                .playerTwoID(idPlayerTwo)
+                .playerTwoId(idPlayerTwo)
                 .pointTwo(getStringPoint(pointTwo))
                 .gameTwo(match.getGamePlayer(idPlayerTwo))
                 .setTwo(match.getSetTwoPlayer())
