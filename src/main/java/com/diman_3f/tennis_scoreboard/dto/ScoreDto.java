@@ -9,8 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 
 public class ScoreDto {
-    private int playerOneID;
-    private int playerTwoID;
+    private int playerOneId;
+    private int playerTwoId;
 
     private String pointOne;
     private int gameOne;

@@ -14,12 +14,9 @@ public class Main {
         installer.initializeDefaultDatabase();
 
         MatchCreatorService matchCreatorService = new MatchCreatorService();
-        matchCreatorService.setPlayerDao(new PlayerDao());
         UUID uuid = matchCreatorService.createCurrentMatch("Ivan", "Oleg");
 
-
         ActiveMatch match = matchCreatorService.getMatch(String.valueOf(uuid));
-
         MatchScoreCalculationService service = new MatchScoreCalculationService(match);
 
         match.setStateMatch(3,5,1,0,0,0, TennisMatchState.REGULAR_STATE);

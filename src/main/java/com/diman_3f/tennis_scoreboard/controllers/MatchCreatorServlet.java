@@ -1,5 +1,6 @@
 package com.diman_3f.tennis_scoreboard.controllers;
 
+import com.diman_3f.tennis_scoreboard.context.ServiceLocator;
 import com.diman_3f.tennis_scoreboard.dao.PlayerDao;
 import com.diman_3f.tennis_scoreboard.services.ApplicationStateInstaller;
 import com.diman_3f.tennis_scoreboard.services.MatchCreatorService;
@@ -35,16 +36,12 @@ public class MatchCreatorServlet extends HttpServlet {
         ApplicationStateInstaller installer = new ApplicationStateInstaller();
         installer.initializeDefaultDatabase();
 
-        // получить имена из тела post запроса
 
         String playerNameOne = req.getParameter("nameOne");
         String playerNameTwo = req.getParameter("nameTwo");
 
-
-
-        MatchCreatorService matchCreatorService = new MatchCreatorService();
-        matchCreatorService.setPlayerDao(new PlayerDao());
-        UUID uuidMatch = matchCreatorService.createCurrentMatch(playerNameOne, playerNameTwo);
+        UUID uuidMatch = ServiceLocator.getService(MatchCreatorService.class)
+                .createCurrentMatch(playerNameOne, playerNameTwo);
         String uuid = URLEncoder.encode(String.valueOf(uuidMatch), "UTF-8");
 
         String path = req.getContextPath() + "/match-score?uuid=" + uuid;
