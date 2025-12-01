@@ -1,9 +1,7 @@
 package com.diman_3f.tennis_scoreboard.controllers;
 
 import com.diman_3f.tennis_scoreboard.context.ServiceLocator;
-import com.diman_3f.tennis_scoreboard.dao.PlayerDao;
 import com.diman_3f.tennis_scoreboard.services.ApplicationStateInstaller;
-import com.diman_3f.tennis_scoreboard.services.MatchCreatorService;
 import com.diman_3f.tennis_scoreboard.utils.JspHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -40,7 +38,7 @@ public class MatchCreatorServlet extends HttpServlet {
         String playerNameOne = req.getParameter("nameOne");
         String playerNameTwo = req.getParameter("nameTwo");
 
-        UUID uuidMatch = ServiceLocator.getService(MatchCreatorService.class)
+        UUID uuidMatch = ServiceLocator.getService(com.diman_3f.tennis_scoreboard.services.OngoingMatchesService.class)
                 .createCurrentMatch(playerNameOne, playerNameTwo);
         String uuid = URLEncoder.encode(String.valueOf(uuidMatch), "UTF-8");
 

@@ -1,6 +1,6 @@
 package com.diman_3f.tennis_scoreboard.entities;
 
-import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
+import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -9,7 +9,7 @@ public class MatchModelMapper implements MatchMapper {
 
 
     @Override
-    public Match matchToTennisMatchEntity(ActiveMatch match) {
+    public Match matchToTennisMatchEntity(OngoingMatch match) {
         Match tennisMatchEntity = new Match();
         tennisMatchEntity.setPlayer1(match.getPlayerOneId());
         tennisMatchEntity.setPlayer2(match.getPlayerTwoId());

@@ -2,7 +2,7 @@ package com.diman_3f.tennis_scoreboard.services;
 
 import com.diman_3f.tennis_scoreboard.context.ServiceLocator;
 import com.diman_3f.tennis_scoreboard.dao.PlayerDao;
-import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
+import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,13 +19,13 @@ import java.util.UUID;
  * Контроллер получает доступ к активному матчу через uuid матча
  * Через контроллер передаем id игрока для начисления point
  */
-public class MatchCreatorService {
+public class OngoingMatchesService {
 
     private PlayerDao playerDao;
-    private Map<UUID, ActiveMatch> matches;
+    private Map<UUID, OngoingMatch> matches;
 
 
-    public MatchCreatorService() {
+    public OngoingMatchesService() {
         this.playerDao = ServiceLocator.getService(PlayerDao.class);
         this.matches = new HashMap<>();
     }
@@ -38,12 +38,12 @@ public class MatchCreatorService {
         int idPlayerTwo = playerDao.findByName(namePlayer2).getId();
 
         UUID uuid = UUID.randomUUID();
-        ActiveMatch activeMatch = new ActiveMatch(idPlayerOne, idPlayerTwo);
-        matches.put(uuid, activeMatch);
+        OngoingMatch ongoingMatch = new OngoingMatch(idPlayerOne, idPlayerTwo);
+        matches.put(uuid, ongoingMatch);
         return uuid;
     }
 
-    public ActiveMatch getMatch(String uuid) {
+    public OngoingMatch getMatch(String uuid) {
         return matches.get(UUID.fromString(uuid));
     }
 

@@ -9,36 +9,42 @@ package com.diman_3f.tennis_scoreboard.services;
 // матч завершен сохранить через другой сервис, матч не завершен обновить состояние модели матча
 
 
+import com.diman_3f.tennis_scoreboard.dto.ScoreDto;
 import com.diman_3f.tennis_scoreboard.entities.MatchMapper;
 import com.diman_3f.tennis_scoreboard.entities.MatchModelMapper;
 import com.diman_3f.tennis_scoreboard.entities.Match;
-import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
+import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
+
+import java.util.UUID;
 
 
 public class MatchScoreController {
 
-    private MatchCreatorService matchCreatorService;
+    private OngoingMatchesService ongoingMatchesService;
     private MatchScoreCalculationService scoreCalculationService;
     private FinishedMatchesPersistenceService finishedMatchesPersistenceService;
-    private MatchMapper matchMapper;
+    private ScoreDtoFormatter dtoFormatter;
 
 
-    public MatchScoreController(MatchCreatorService matchCreatorService, MatchScoreCalculationService scoreCalculationService,
+    public MatchScoreController(OngoingMatchesService ongoingMatchesService, MatchScoreCalculationService scoreCalculationService,
                                 FinishedMatchesPersistenceService finishedMatchesPersistenceService) {
-        this.matchCreatorService = matchCreatorService;
+        this.ongoingMatchesService = ongoingMatchesService;
         this.scoreCalculationService = scoreCalculationService;
         this.finishedMatchesPersistenceService = finishedMatchesPersistenceService;
-        this.matchMapper = new MatchModelMapper();
+        this.dtoFormatter = new ScoreDtoFormatter();
     }
 
-
-    public void addPoint(String uuid) {
-
-        ActiveMatch match = matchCreatorService.getMatch(uuid);
-        Match tennisMatchEntity = matchMapper.matchToTennisMatchEntity(match);
-        finishedMatchesPersistenceService.saveMatch(tennisMatchEntity);
-
-        //преоброзовать в ScoreModelFinishedDto и вернуть для отображения на vue
+    public ScoreDto addPoint(String playerId, String uuid) {
+        int id = Integer.parseInt(playerId);
+        OngoingMatch updateMatch = scoreCalculationService.upPoint(id, ongoingMatchesService.getMatch(uuid));
+        if (updateMatch.isMatchFinished()) {
+            int winnerPlayerId = updateMatch.getWinnerPlayerId();
+            updateMatch.getPlayerOneId();
+            updateMatch.getPlayerTwoId();
+            finishedMatchesPersistenceService.saveMatch(new Match(0, winnerPlayerId, updateMatch.getPlayerOneId(), updateMatch.getPlayerTwoId()));
+            return dtoFormatter.createDto(updateMatch);
+        }
+        return dtoFormatter.createDto(updateMatch);
     }
 }
 

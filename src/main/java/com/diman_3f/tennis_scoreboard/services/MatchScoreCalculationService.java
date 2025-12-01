@@ -1,7 +1,7 @@
 package com.diman_3f.tennis_scoreboard.services;
 
 import com.diman_3f.tennis_scoreboard.dto.ScoreDto;
-import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
+import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
 import com.diman_3f.tennis_scoreboard.models.Game;
 import com.diman_3f.tennis_scoreboard.models.SetMatch;
 
@@ -16,60 +16,53 @@ import java.util.Map;
 
 public class MatchScoreCalculationService {
 
-    private ActiveMatch match;
     private TennisRuleHandler tennisRuleHandler;
-    private ScoreDtoFormatter dtoFormatter;
 
-    public MatchScoreCalculationService(ActiveMatch match) {
-        this.match = match;
-        this.tennisRuleHandler = new TennisRuleHandler(match);
-        this.dtoFormatter = new ScoreDtoFormatter(match);
-    }
 
-    public ActiveMatch getMatch() {
-        return match;
+    public MatchScoreCalculationService(TennisRuleHandler handler) {
+        this.tennisRuleHandler = handler;
     }
 
 
-    public ScoreDto upPoint(int playerId) {
-
-        if (!tennisRuleHandler.isTieBreak()) {
-            if (tennisRuleHandler.isDeuce()) {
+    public OngoingMatch upPoint(int playerId, OngoingMatch match) {
+        if (!tennisRuleHandler.isTieBreak(match)) {
+            if (tennisRuleHandler.isDeuce(match)) {
                 match.setMatchState(TennisMatchState.ADVANTAGE);
-                checkAdvantage(playerId);
+                checkAdvantagePlayer(playerId, match);
+
             } else {
-                upPointPlayerId(playerId);
+                upPointPlayerId(playerId, match);
                 match.setMatchState(TennisMatchState.REGULAR_STATE);
-                if (tennisRuleHandler.hasWinnerInGame(playerId)) {
+                if (tennisRuleHandler.hasWinnerInGame(playerId, match)) {
                     actionResetDefaultFieldGame(match.getGame());
-                    upGamePlayerById(playerId);
-                    if (tennisRuleHandler.hasWinnerInSet(playerId)) {
+                    upGamePlayerById(playerId, match);
+                    if (tennisRuleHandler.hasWinnerInSet(playerId, match)) {
                         actionResetDefaultFieldGame(match.getGame());
                         actionResetDefaultFieldSet(match.getSet());
-                        upSetPlayerById(playerId);
+                        upSetPlayerById(playerId, match);
                     }
                 }
             }
         } else {
             match.setMatchState(TennisMatchState.TIEBREAK);
-            upPointTieBreakPlayerById(playerId);
-            if (tennisRuleHandler.hasWinnerInTieBreak(playerId)) {
+            upPointTieBreakPlayerById(playerId, match);
+            if (tennisRuleHandler.hasWinnerInTieBreak(playerId, match)) {
                 actionResetDefaultFieldGame(match.getGame());
                 actionResetDefaultFieldSet(match.getSet());
-                upSetPlayerById(playerId);
+                upSetPlayerById(playerId, match);
                 match.setMatchState(TennisMatchState.REGULAR_STATE);
             }
 
         }
-        if (tennisRuleHandler.hasWinnerInMatch(playerId)) {
+        if (tennisRuleHandler.hasWinnerInMatch(playerId, match)) {
             match.setMatchState(TennisMatchState.FINISHED);
             match.setWinnerPlayerId(playerId);
         }
-        return dtoFormatter.createDto();
+        return match;
     }
 
 
-    private void checkAdvantage(int playerId) {
+    private void checkAdvantagePlayer(int playerId, OngoingMatch match) {
         Map<Integer, Integer> gamePlayers = match.getGamePlayers();
         if (match.hasAdvantagePlayerById(playerId)) {
             actionResetDefaultFieldGame(match.getGame());
@@ -92,7 +85,7 @@ public class MatchScoreCalculationService {
     }
 
 
-    private void upPointPlayerId(int playerId) {
+    private void upPointPlayerId(int playerId, OngoingMatch match) {
         if (playerId == match.getPlayerOneId()) {
             match.upPointOnePlayer();
         } else {
@@ -100,7 +93,7 @@ public class MatchScoreCalculationService {
         }
     }
 
-    public void upSetPlayerById(int playerId) {
+    public void upSetPlayerById(int playerId, OngoingMatch match) {
         if (playerId == match.getPlayerOneId()) {
             match.upSetOnePlayer();
         } else {
@@ -108,7 +101,7 @@ public class MatchScoreCalculationService {
         }
     }
 
-    public void upGamePlayerById(int playerId) {
+    public void upGamePlayerById(int playerId, OngoingMatch match) {
         if (playerId == match.getPlayerOneId()) {
             match.upGameOnePlayer();
         } else {
@@ -116,7 +109,7 @@ public class MatchScoreCalculationService {
         }
     }
 
-    public void upPointTieBreakPlayerById(int playerId) {
+    public void upPointTieBreakPlayerById(int playerId, OngoingMatch match) {
         if (playerId == match.getPlayerOneId()) {
             match.getSet().upPointTieBreakOnePlayer();
         } else {

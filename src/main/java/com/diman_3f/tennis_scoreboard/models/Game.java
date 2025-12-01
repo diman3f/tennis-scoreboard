@@ -32,6 +32,13 @@ public class Game {
         this.pointTwoPlayer++;
     }
 
+    public void setAdvantageOnePlayer(boolean advantageOnePlayer) {
+        this.advantageOnePlayer = advantageOnePlayer;
+    }
+
+    public void setAdvantageTwoPlayer(boolean advantageTwoPlayer) {
+        this.advantageTwoPlayer = advantageTwoPlayer;
+    }
 
     public void resetFieldDefault() {
         pointOnePlayer = 0;

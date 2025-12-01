@@ -2,30 +2,24 @@ package com.diman_3f.tennis_scoreboard.services;
 
 import com.diman_3f.tennis_scoreboard.TennisPoints;
 import com.diman_3f.tennis_scoreboard.dto.ScoreDto;
-import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
+import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
 
 public class ScoreDtoFormatter {
 
-    private ActiveMatch match;
 
-
-    public ScoreDtoFormatter(ActiveMatch match) {
-        this.match = match;
-    }
-
-    public ScoreDto createDto() {
+    public ScoreDto createDto(OngoingMatch match) {
         if (match.getState().equals(TennisMatchState.REGULAR_STATE)) {
-            return getRegularScore();
+            return getRegularScore(match);
         } else if (match.getState().equals(TennisMatchState.ADVANTAGE)) {
-            return getAdvantageScore();
+            return getAdvantageScore(match);
         } else if (match.getState().equals(TennisMatchState.TIEBREAK)) {
-            return getTiebreak();
+            return getTiebreak(match);
         } else if (match.getState().equals(TennisMatchState.FINISHED)) {
-            return getRegularScore();
+            return getRegularScore(match);
         } else throw new RuntimeException("Ошибка в определении статуса матча");
     }
 
-    private ScoreDto getRegularScore() {
+    private ScoreDto getRegularScore(OngoingMatch match) {
         int idPlayerOne = match.getPlayerOneId();
         int idPlayerTwo = match.getPlayerTwoId();
         int pointOne = match.getPointPlayer(idPlayerOne);
@@ -59,22 +53,22 @@ public class ScoreDtoFormatter {
         }
     }
 
-    private ScoreDto getAdvantageScore() {
-        ScoreDto dto = getRegularScore();
-        setAdvantage(dto);
+    private ScoreDto getAdvantageScore(OngoingMatch match) {
+        ScoreDto dto = getRegularScore(match);
+        setAdvantage(dto, match);
         return dto;
     }
 
-    private void setAdvantage(ScoreDto dto) {
-        if (match.isAdvantageOnePlayer()) {
+    private void setAdvantage(ScoreDto dto, OngoingMatch match) {
+        if (match.getGame().isAdvantageOnePlayer()) {
             dto.setPointOne("AD");
-        } else if (match.isAdvantageTwoPlayer()) {
+        } else if (match.getGame().isAdvantageTwoPlayer()) {
             dto.setPointTwo("AD");
         }
     }
 
-    private ScoreDto getTiebreak() {
-        ScoreDto dto = getRegularScore();
+    private ScoreDto getTiebreak(OngoingMatch match) {
+        ScoreDto dto = getRegularScore(match);
         dto.setPointOne(String.valueOf(match.getSet().getPointOnePlayer()));
         dto.setPointTwo(String.valueOf(match.getSet().getPointTwoPlayer()));
         return dto;

@@ -21,7 +21,7 @@ import java.util.*;
 @Getter
 @Setter
 
-public class ActiveMatch {
+public class OngoingMatch {
 
     private int playerOneId;
     private int playerTwoId;
@@ -35,7 +35,7 @@ public class ActiveMatch {
     private TennisMatchState state;
 
 
-    public ActiveMatch(int playerOneId, int playerTwoId) {
+    public OngoingMatch(int playerOneId, int playerTwoId) {
         this.playerOneId = playerOneId;
         this.playerTwoId = playerTwoId;
         this.setOnePlayer = 0;
@@ -82,11 +82,13 @@ public class ActiveMatch {
 
     public void setAdvantagePlayer(int playerId) {
         if (playerId == playerOneId) {
-            this.advantageOnePlayer = true;
-            this.advantageTwoPlayer = false;
+            this.game.setAdvantageOnePlayer(true);
+            this.game.setAdvantageTwoPlayer(false);
         } else if (playerId == playerTwoId) {
-            this.advantageTwoPlayer = true;
-            this.advantageOnePlayer = false;
+            this.game.setAdvantageOnePlayer(false);
+            this.game.setAdvantageTwoPlayer(true);
+        } else {
+            throw new RuntimeException("переда не корректный id");
         }
     }
 
