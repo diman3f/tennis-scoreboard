@@ -29,6 +29,8 @@ public class OngoingMatch {
     private int setTwoPlayer;
     private boolean advantageOnePlayer;
     private boolean advantageTwoPlayer;
+    private int advantageOnePoint;
+    private int advantageTwoPoint;
     private Integer winnerPlayerId;
     private Game game;
     private SetMatch set;
@@ -63,6 +65,22 @@ public class OngoingMatch {
         this.setOnePlayer = oneSet;
         this.setTwoPlayer = twoSet;
         this.state = state;
+    }
+
+    public void setAdvantageOnePoint() {
+        this.advantageOnePoint++;
+    }
+
+    public void setAdvantageTwoPoint() {
+        this.advantageTwoPoint++;
+    }
+
+    public int getAdvantagePointById(int playerId) {
+        if (playerId == playerOneId) {
+            return advantageOnePoint;
+        } else {
+            return advantageTwoPoint;
+        }
     }
 
     public void setMatchState(TennisMatchState state) {

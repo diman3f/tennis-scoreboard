@@ -43,8 +43,7 @@ public class Game {
     public void resetFieldDefault() {
         pointOnePlayer = 0;
         pointTwoPlayer = 0;
-        advantageOnePlayer = false;
-        advantageTwoPlayer = false;
+
     }
 
 

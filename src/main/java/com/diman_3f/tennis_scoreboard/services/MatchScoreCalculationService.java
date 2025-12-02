@@ -26,34 +26,35 @@ public class MatchScoreCalculationService {
 
     public OngoingMatch upPoint(int playerId, OngoingMatch match) {
         if (!tennisRuleHandler.isTieBreak(match)) {
-            if (tennisRuleHandler.isDeuce(match)) {
-                match.setMatchState(TennisMatchState.ADVANTAGE);
-                checkAdvantagePlayer(playerId, match);
-
-            } else {
+            if (!tennisRuleHandler.isDeuce(match)) {
                 upPointPlayerId(playerId, match);
                 match.setMatchState(TennisMatchState.REGULAR_STATE);
                 if (tennisRuleHandler.hasWinnerInGame(playerId, match)) {
-                    actionResetDefaultFieldGame(match.getGame());
+                    actionResetDefaultFieldGame(match);
                     upGamePlayerById(playerId, match);
                     if (tennisRuleHandler.hasWinnerInSet(playerId, match)) {
-                        actionResetDefaultFieldGame(match.getGame());
+                        actionResetDefaultFieldGame(match);
                         actionResetDefaultFieldSet(match.getSet());
                         upSetPlayerById(playerId, match);
+
                     }
                 }
+            } else {
+                match.setMatchState(TennisMatchState.ADVANTAGE);
+                upPointAdvantageById(playerId, match);
+                checkAdvantagePlayer(playerId, match);
             }
         } else {
             match.setMatchState(TennisMatchState.TIEBREAK);
             upPointTieBreakPlayerById(playerId, match);
             if (tennisRuleHandler.hasWinnerInTieBreak(playerId, match)) {
-                actionResetDefaultFieldGame(match.getGame());
+                actionResetDefaultFieldGame(match);
                 actionResetDefaultFieldSet(match.getSet());
                 upSetPlayerById(playerId, match);
                 match.setMatchState(TennisMatchState.REGULAR_STATE);
             }
-
         }
+
         if (tennisRuleHandler.hasWinnerInMatch(playerId, match)) {
             match.setMatchState(TennisMatchState.FINISHED);
             match.setWinnerPlayerId(playerId);
@@ -63,25 +64,31 @@ public class MatchScoreCalculationService {
 
 
     private void checkAdvantagePlayer(int playerId, OngoingMatch match) {
-        Map<Integer, Integer> gamePlayers = match.getGamePlayers();
-        if (match.hasAdvantagePlayerById(playerId)) {
-            actionResetDefaultFieldGame(match.getGame());
-            if (gamePlayers.get(playerId) == match.getPlayerOneId()) {
-                match.upGameOnePlayer();
-            } else {
-                match.upGameTwoPlayer();
-            }
-        } else {
-            match.setAdvantagePlayer(playerId);
+        int pointADPlayer = match.getAdvantagePointById(playerId);
+        int differentPoints = Math.abs(match.getAdvantageOnePoint() - match.getAdvantageTwoPoint());
+        if (differentPoints == 2) {
+            upGamePlayerById(playerId, match);
+            actionResetDefaultFieldGame(match);
+        } else if (differentPoints == 1) {
+            actionResetDefaultFieldAdvantage(match);
+            setAdvantagePlayer(playerId, match);
         }
     }
 
-    private void actionResetDefaultFieldGame(Game game) {
-        game.resetFieldDefault();
+
+    private void actionResetDefaultFieldGame(OngoingMatch match) {
+        match.getGame().resetFieldDefault();
+        match.setAdvantageOnePlayer(false);
+        match.setAdvantageTwoPlayer(false);
+
     }
 
     private void actionResetDefaultFieldSet(SetMatch set) {
         set.resetFieldDefault();
+    }
+    private void actionResetDefaultFieldAdvantage(OngoingMatch match) {
+        match.setAdvantageOnePlayer(false);
+        match.setAdvantageTwoPlayer(false);
     }
 
 
@@ -109,6 +116,15 @@ public class MatchScoreCalculationService {
         }
     }
 
+    public void setAdvantagePlayer(int playerId, OngoingMatch match) {
+        if (playerId == match.getPlayerOneId()) {
+            match.setAdvantageOnePlayer(true);
+        } else {
+            match.setAdvantageTwoPlayer(true);
+        }
+    }
+
+
     public void upPointTieBreakPlayerById(int playerId, OngoingMatch match) {
         if (playerId == match.getPlayerOneId()) {
             match.getSet().upPointTieBreakOnePlayer();
@@ -117,4 +133,12 @@ public class MatchScoreCalculationService {
         }
     }
 
+
+    private void upPointAdvantageById(int playerId, OngoingMatch match) {
+        if (playerId == match.getPlayerOneId()) {
+            match.setAdvantageOnePoint();
+        } else {
+            match.setAdvantageTwoPoint();
+        }
+    }
 }

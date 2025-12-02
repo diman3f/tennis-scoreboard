@@ -60,9 +60,9 @@ public class ScoreDtoFormatter {
     }
 
     private void setAdvantage(ScoreDto dto, OngoingMatch match) {
-        if (match.getGame().isAdvantageOnePlayer()) {
+        if (match.isAdvantageOnePlayer()) {
             dto.setPointOne("AD");
-        } else if (match.getGame().isAdvantageTwoPlayer()) {
+        } else if (match.isAdvantageTwoPlayer()) {
             dto.setPointTwo("AD");
         }
     }
