@@ -64,14 +64,16 @@ public class MatchScoreCalculationService {
 
 
     private void checkAdvantagePlayer(int playerId, OngoingMatch match) {
-        int pointADPlayer = match.getAdvantagePointById(playerId);
         int differentPoints = Math.abs(match.getAdvantageOnePoint() - match.getAdvantageTwoPoint());
         if (differentPoints == 2) {
             upGamePlayerById(playerId, match);
             actionResetDefaultFieldGame(match);
+            match.setMatchState(TennisMatchState.REGULAR_STATE);
         } else if (differentPoints == 1) {
             actionResetDefaultFieldAdvantage(match);
             setAdvantagePlayer(playerId, match);
+        } else {
+            actionResetDefaultFieldAdvantage(match);
         }
     }
 

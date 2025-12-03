@@ -9,19 +9,8 @@ import java.util.Map;
 @Getter
 public class Game {
 
-    private Integer pointOnePlayer;
-    private Integer pointTwoPlayer;
-    private boolean advantageOnePlayer;
-    private boolean advantageTwoPlayer;
-
-
-
-
-    public Game() {
-        this.pointOnePlayer = 0;
-        this.pointTwoPlayer = 0;
-
-    }
+    private int pointOnePlayer;
+    private int pointTwoPlayer;
 
 
     public void setPointOnePlayer() {
@@ -32,13 +21,6 @@ public class Game {
         this.pointTwoPlayer++;
     }
 
-    public void setAdvantageOnePlayer(boolean advantageOnePlayer) {
-        this.advantageOnePlayer = advantageOnePlayer;
-    }
-
-    public void setAdvantageTwoPlayer(boolean advantageTwoPlayer) {
-        this.advantageTwoPlayer = advantageTwoPlayer;
-    }
 
     public void resetFieldDefault() {
         pointOnePlayer = 0;

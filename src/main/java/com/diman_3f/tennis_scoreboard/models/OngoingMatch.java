@@ -98,17 +98,6 @@ public class OngoingMatch {
         throw new NoSuchElementException("Матч не закончен, победитель не определен");
     }
 
-    public void setAdvantagePlayer(int playerId) {
-        if (playerId == playerOneId) {
-            this.game.setAdvantageOnePlayer(true);
-            this.game.setAdvantageTwoPlayer(false);
-        } else if (playerId == playerTwoId) {
-            this.game.setAdvantageOnePlayer(false);
-            this.game.setAdvantageTwoPlayer(true);
-        } else {
-            throw new RuntimeException("переда не корректный id");
-        }
-    }
 
     public int getSetPlayer(int playerId) {
         if (playerId == playerOneId) {
@@ -123,13 +112,6 @@ public class OngoingMatch {
     }
 
 
-    public boolean hasAdvantagePlayerById(int playerId) {
-        if (playerId == playerOneId) {
-            return game.isAdvantageOnePlayer();
-        } else {
-            return game.isAdvantageTwoPlayer();
-        }
-    }
 
     public int getPointTieBreak(int playerId) {
         if (playerId == playerOneId) {
