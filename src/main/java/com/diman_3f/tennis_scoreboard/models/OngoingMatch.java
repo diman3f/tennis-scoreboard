@@ -67,11 +67,11 @@ public class OngoingMatch {
         this.state = state;
     }
 
-    public void setAdvantageOnePoint() {
+    public void upPointAdvantageOne() {
         this.advantageOnePoint++;
     }
 
-    public void setAdvantageTwoPoint() {
+    public void upPointAdvantageTwo() {
         this.advantageTwoPoint++;
     }
 

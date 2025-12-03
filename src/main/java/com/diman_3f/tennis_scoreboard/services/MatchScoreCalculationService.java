@@ -1,11 +1,8 @@
 package com.diman_3f.tennis_scoreboard.services;
 
-import com.diman_3f.tennis_scoreboard.dto.ScoreDto;
+import com.diman_3f.tennis_scoreboard.TennisRuleThreshold;
 import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
-import com.diman_3f.tennis_scoreboard.models.Game;
 import com.diman_3f.tennis_scoreboard.models.SetMatch;
-
-import java.util.Map;
 
 
 /**
@@ -23,7 +20,6 @@ public class MatchScoreCalculationService {
         this.tennisRuleHandler = handler;
     }
 
-
     public OngoingMatch upPoint(int playerId, OngoingMatch match) {
         if (!tennisRuleHandler.isTieBreak(match)) {
             if (!tennisRuleHandler.isDeuce(match)) {
@@ -36,7 +32,6 @@ public class MatchScoreCalculationService {
                         actionResetDefaultFieldGame(match);
                         actionResetDefaultFieldSet(match.getSet());
                         upSetPlayerById(playerId, match);
-
                     }
                 }
             } else {
@@ -54,7 +49,6 @@ public class MatchScoreCalculationService {
                 match.setMatchState(TennisMatchState.REGULAR_STATE);
             }
         }
-
         if (tennisRuleHandler.hasWinnerInMatch(playerId, match)) {
             match.setMatchState(TennisMatchState.FINISHED);
             match.setWinnerPlayerId(playerId);
@@ -62,33 +56,49 @@ public class MatchScoreCalculationService {
         return match;
     }
 
-
     private void checkAdvantagePlayer(int playerId, OngoingMatch match) {
         int differentPoints = Math.abs(match.getAdvantageOnePoint() - match.getAdvantageTwoPoint());
-        if (differentPoints == 2) {
+        if (differentPoints == TennisRuleThreshold.MIN_POINT_TO_WIN_ADVANTAGE.getValue()) {
             upGamePlayerById(playerId, match);
+            resetAdvantagePoints(match);
             actionResetDefaultFieldGame(match);
             match.setMatchState(TennisMatchState.REGULAR_STATE);
-        } else if (differentPoints == 1) {
-            actionResetDefaultFieldAdvantage(match);
+        } else if (differentPoints == TennisRuleThreshold.MIN_DIFFERENT_POINT_ADVANTAGE_PLAYER.getValue()) {
+            resetAdvantageExceptAdvantageById(playerId, match);
             setAdvantagePlayer(playerId, match);
-        } else {
-            actionResetDefaultFieldAdvantage(match);
+        } else if (differentPoints == TennisRuleThreshold.DIFFERENT_POINT_DEUCE_STATE.getValue()) {
+            resetAdvantageFields(match);
         }
     }
-
 
     private void actionResetDefaultFieldGame(OngoingMatch match) {
         match.getGame().resetFieldDefault();
         match.setAdvantageOnePlayer(false);
         match.setAdvantageTwoPlayer(false);
-
     }
 
     private void actionResetDefaultFieldSet(SetMatch set) {
         set.resetFieldDefault();
     }
-    private void actionResetDefaultFieldAdvantage(OngoingMatch match) {
+
+    private void resetAdvantageExceptAdvantageById(int playerId, OngoingMatch match) {
+        match.setAdvantageOnePlayer(false);
+        match.setAdvantageTwoPlayer(false);
+        if (playerId == match.getPlayerOneId()) {
+            match.setAdvantageOnePlayer(true);
+        } else {
+            match.setAdvantageTwoPlayer(true);
+        }
+    }
+
+    private void resetAdvantagePoints(OngoingMatch match) {
+        match.setAdvantageOnePoint(0);
+        match.setAdvantageTwoPoint(0);
+    }
+
+
+    private void resetAdvantageFields(OngoingMatch match) {
+        resetAdvantagePoints(match);
         match.setAdvantageOnePlayer(false);
         match.setAdvantageTwoPlayer(false);
     }
@@ -138,9 +148,9 @@ public class MatchScoreCalculationService {
 
     private void upPointAdvantageById(int playerId, OngoingMatch match) {
         if (playerId == match.getPlayerOneId()) {
-            match.setAdvantageOnePoint();
+            match.upPointAdvantageOne();
         } else {
-            match.setAdvantageTwoPoint();
+            match.upPointAdvantageTwo();
         }
     }
 }
