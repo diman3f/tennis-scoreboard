@@ -164,15 +164,6 @@ public class OngoingMatch {
     }
 
 
-    public Map<Integer, Integer> getGamePlayers() {
-        Map<Integer, Integer> games = new HashMap<>();
-        Integer gameOnePlayer = set.getGameOnePlayer();
-        Integer gameTwoPlayer = set.getGameTwoPlayer();
-        games.put(playerOneId, gameOnePlayer);
-        games.put(playerTwoId, gameTwoPlayer);
-        return games;
-    }
-
 }
 
 
