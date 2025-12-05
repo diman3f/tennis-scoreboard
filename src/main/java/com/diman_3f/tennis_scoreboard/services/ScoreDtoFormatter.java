@@ -15,7 +15,7 @@ public class ScoreDtoFormatter {
         } else if (match.getState().equals(TennisMatchState.TIEBREAK)) {
             return getTiebreak(match);
         } else if (match.getState().equals(TennisMatchState.FINISHED)) {
-            return getRegularScore(match);
+            return getFinishedMatch(match);
         } else throw new RuntimeException("Ошибка в определении статуса матча");
     }
 
@@ -35,6 +35,7 @@ public class ScoreDtoFormatter {
                 .pointTwo(getStringPoint(pointTwo))
                 .gameTwo(match.getGamePlayer(idPlayerTwo))
                 .setTwo(match.getSetTwoPlayer())
+                .page("match-score_jsp")
                 .build();
     }
 
@@ -71,6 +72,14 @@ public class ScoreDtoFormatter {
         ScoreDto dto = getRegularScore(match);
         dto.setPointOne(String.valueOf(match.getSet().getPointOnePlayer()));
         dto.setPointTwo(String.valueOf(match.getSet().getPointTwoPlayer()));
+        return dto;
+    }
+    private ScoreDto getFinishedMatch(OngoingMatch match) {
+        ScoreDto dto = getRegularScore(match);
+        dto.setFinishedMatch(match.isMatchFinished());
+        dto.setIdPlayerOneWinner(match.getWinnerPlayerId());
+        dto.setIdPlayerTwoWinner(match.getWinnerPlayerId());
+        dto.setPage("match-score_finished");
         return dto;
     }
 

@@ -52,17 +52,10 @@ public class MatchScore extends HttpServlet {
         String uuid = req.getParameter("uuid");
         req.setAttribute("uuid", uuid);
 
-        //в оконцовке получаем готовый дто модели
-        // контроллер принимает id и начисляет очко и выводит dto
-
         ScoreDto dto = controller.addPoint(playerId, uuid);
 
-        //сервис анализирует состояние счета матча
-        //если счет не завершен передаем в работу другому сервису
-        // если завершен обрабатываем и переходим на страницу финального счета
-
         req.setAttribute("dto", dto);
-        getServletContext().getRequestDispatcher(JspHelper.getPath("match-score_jsp")).
+        getServletContext().getRequestDispatcher(JspHelper.getPath(dto.getPage())).
                 forward(req, resp);
     }
 }
