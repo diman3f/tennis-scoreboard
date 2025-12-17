@@ -41,7 +41,7 @@ public class MatchScoreController {
             int winnerPlayerId = updateMatch.getWinnerPlayerId();
             updateMatch.getPlayerOneId();
             updateMatch.getPlayerTwoId();
-            finishedMatchesPersistenceService.saveMatch(new Match(0, winnerPlayerId, updateMatch.getPlayerOneId(), updateMatch.getPlayerTwoId()));
+            finishedMatchesPersistenceService.saveMatch(new Match());
             return dtoFormatter.createDto(updateMatch);
         }
         return dtoFormatter.createDto(updateMatch);

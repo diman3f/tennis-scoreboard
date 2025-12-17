@@ -15,7 +15,7 @@ public class FinishedMatchesPersistenceService {
     public void saveMatch(Match match) {
         try {
             matchDao.save(match);
-            System.out.println("запись матча в БД имя игроков, победитель");
+            System.out.println("запись матча в БД имя игроков, победитель"+ match.getWinner());
         } catch (RuntimeException e) {
             throw new NoSuchElementException("матч не сохранен");
         }

@@ -11,9 +11,9 @@ public class MatchModelMapper implements MatchMapper {
     @Override
     public Match matchToTennisMatchEntity(OngoingMatch match) {
         Match tennisMatchEntity = new Match();
-        tennisMatchEntity.setPlayer1(match.getPlayerOneId());
-        tennisMatchEntity.setPlayer2(match.getPlayerTwoId());
-        tennisMatchEntity.setWinner(match.getIdPlayerWinnerMatch());
+//        tennisMatchEntity.setPlayer1(match.getPlayerOneId());
+//        tennisMatchEntity.setPlayer2(match.getPlayerTwoId());
+//        tennisMatchEntity.setWinner(match.getIdPlayerWinnerMatch());
         return tennisMatchEntity;
     }
 }

@@ -1,4 +1,6 @@
-<html>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,9 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../../tennis-scoreboard-html-layouts-main/css/style.css">
 
-    <script src="js/app.js"></script>
+    <script src="../../tennis-scoreboard-html-layouts-main/js/app.js"></script>
 </head>
 
 <body>
@@ -16,14 +18,14 @@
     <section class="nav-header">
         <div class="brand">
             <div class="nav-toggle">
-                <img src="images/menu.png" alt="Logo" class="logo">
+                <img src="../../tennis-scoreboard-html-layouts-main/images/menu.png" alt="Logo" class="logo">
             </div>
-            <span class="logo-text">TennisScoreboard</span>
+            <span class="logo-text">${requestScope.get("id")}</span>
         </div>
         <div>
             <nav class="nav-links">
-                <a class="nav-link" href="#">Home</a>
-                <a class="nav-link" href="#">Matches</a>
+                <a class="nav-link" href="/home">Home</a>
+                <a class="nav-link" href="/matches?page=1">Matches</a>
             </nav>
         </div>
     </section>
@@ -32,7 +34,11 @@
     <div class="container">
         <h1>Matches</h1>
         <div class="input-container">
-            <input class="input-filter" placeholder="Filter by name" type="text" />
+            <form method="GET" action="/matches">
+                <input class="input-filter" placeholder="Filter by name" type="text" name="name" required/>
+                <input type="submit" style="display:none"></form>
+            <div class="form-container center">
+            </div>
             <div>
                 <a href="#">
                     <button class="btn-filter">Reset Filter</button>
@@ -42,14 +48,14 @@
 
         <table class="table-matches">
             <tr>
-                <th>Player One</th>
-                <th>Player Two</th>
-                <th>Winner</th>
+                <th>${requestScope.get("playerOne")}</th>
+                <th>${requestScope.get("playerTwo")}</th>
+                <th>${requestScope.get("winner")}</th>
             </tr>
             <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Rafael Nadal</span></td>
+                <td>${requestScope.get("playerOne")}</td>
+                <td>${requestScope.get("playerTwo")}</td>
+                <td><span class="winner-name-td">${requestScope.get("winner")}</span></td>
             </tr>
             <tr>
                 <td>Rafael Nadal</td>
@@ -75,9 +81,9 @@
 
         <div class="pagination">
             <a class="prev" href="#"> < </a>
-            <a class="num-page current" href="#">1</a>
-            <a class="num-page" href="#">2</a>
-            <a class="num-page" href="#">3</a>
+            <a class="num-page current" href="/matches?page=1">1</a>
+            <a class="num-page" href="/matches?page=2">2</a>
+            <a class="num-page" href="/matches?page=3">3</a>
             <a class="next" href="#"> > </a>
         </div>
     </div>
