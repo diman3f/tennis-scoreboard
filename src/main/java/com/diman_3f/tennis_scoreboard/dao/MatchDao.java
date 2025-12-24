@@ -8,6 +8,7 @@ import java.util.List;
 public interface MatchDao {
 
     void save(Match entity);
+    int count();
     Match findById(int id);
     MatchPlayerName findByName(String name);
     List<MatchPlayerName> findAll();
