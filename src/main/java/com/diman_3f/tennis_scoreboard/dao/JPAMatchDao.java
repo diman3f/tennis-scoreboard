@@ -1,18 +1,21 @@
 package com.diman_3f.tennis_scoreboard.dao;
 
 import com.diman_3f.tennis_scoreboard.context.UtilSessionFactory;
-import com.diman_3f.tennis_scoreboard.dto.MatchPlayerName;
+import com.diman_3f.tennis_scoreboard.dto.MatchResultDto;
 import com.diman_3f.tennis_scoreboard.entities.Match;
+import com.diman_3f.tennis_scoreboard.entities.MatchModelMapper;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.w3c.dom.ranges.RangeException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 public class JPAMatchDao implements MatchDao {
+
+
+
     @Override
     public void save(Match entity) {
         Transaction transaction = null;
@@ -44,6 +47,48 @@ public class JPAMatchDao implements MatchDao {
     }
 
     @Override
+    public int count() {
+        Transaction transaction = null;
+        try (Session session = UtilSessionFactory.getSession()) {
+            transaction = session.beginTransaction();
+            List<Match> matches = session.createQuery("from Match ", Match.class).list();
+            transaction.commit();
+            return matches.size();
+        } catch (RuntimeException e) {
+            transaction.rollback();
+            throw new RuntimeException("ошибка получения колчество записей");
+        }
+    }
+
+    @Override
+    public List<MatchResultDto> getMatchWithOffSet(int offset, int limit) {
+        Transaction transaction = null;
+        try(Session session = UtilSessionFactory.getSession()) {
+            transaction = session.beginTransaction();
+
+            String hql = "from Match as m " +
+                    "left join fetch  m.player1 as onePlayer " +
+                    "left join fetch  m.player2 as twoPlayer " +
+                    "left join fetch m.winner as winner ";
+
+            Query<Match> query = session.createQuery(hql, Match.class);
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            List<Match> resultList = query.getResultList();
+
+            List<MatchResultDto> matches = new ArrayList<>();
+            for(Match match : resultList) {
+                matches.add(new MatchResultDto(match.getPlayer1().getName(), match.getPlayer2().getName(), match.getWinner().getName()));
+            }
+            transaction.commit();
+            return matches;
+        } catch (RuntimeException e) {
+            transaction.rollback();;
+            throw new RuntimeException("Ошибка в получении выборки матчей");
+        }
+    }
+
+    @Override
     public Match findById(int id) {
         Transaction transaction = null;
         try (Session session = UtilSessionFactory.getSession()) {
@@ -64,7 +109,7 @@ public class JPAMatchDao implements MatchDao {
     }
 
     @Override
-    public MatchPlayerName findByName(String name) {
+    public MatchResultDto findByName(String name) {
         Transaction transaction = null;
         try (Session session = UtilSessionFactory.getSession()) {
             transaction = session.beginTransaction();
@@ -77,7 +122,7 @@ public class JPAMatchDao implements MatchDao {
             Query<Match> query = session.createQuery(hql, Match.class);
             Query<Match> result = query.setParameter("namePlayer", name);
             Match singleResult = result.getSingleResult();
-            MatchPlayerName matchPlayerName = new MatchPlayerName(singleResult.getId(), singleResult.getPlayer1().getName(), singleResult.getPlayer2().getName(), singleResult.getWinner().getName());
+            MatchResultDto matchPlayerName = new MatchResultDto(singleResult.getPlayer1().getName(), singleResult.getPlayer2().getName(), singleResult.getWinner().getName());
             transaction.commit();
             return matchPlayerName;
         } catch (RuntimeException e) {
@@ -86,7 +131,7 @@ public class JPAMatchDao implements MatchDao {
     }
 
     @Override
-    public List<MatchPlayerName> findAll() {
+    public List<MatchResultDto> findAll() {
         Transaction transaction = null;
         try (Session session = UtilSessionFactory.getSession()) {
             transaction = session.beginTransaction();
@@ -94,6 +139,7 @@ public class JPAMatchDao implements MatchDao {
                     "join fetch m.player1 p1 " +
                     "join fetch m.player2 p2 " +
                     "join fetch m.winner pw";
+
 
             Query<Match> query = session.createQuery(hql, Match.class);
             List<Match> resultList = query.getResultList();
@@ -104,10 +150,10 @@ public class JPAMatchDao implements MatchDao {
         }
     }
 
-    private List<MatchPlayerName> toMatch(List<Match> matches) {
-        List<MatchPlayerName> dto = new ArrayList<>();
+    private List<MatchResultDto> toMatch(List<Match> matches) {
+        List<MatchResultDto> dto = new ArrayList<>();
         for (Match match : matches) {
-            dto.add(new MatchPlayerName(match.getId(), match.getPlayer1().getName(), match.getPlayer2().getName(), match.getWinner().getName()));
+            dto.add(new MatchResultDto(match.getPlayer1().getName(), match.getPlayer2().getName(), match.getWinner().getName()));
         }
         return dto;
     }

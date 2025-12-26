@@ -11,6 +11,8 @@ import lombok.*;
 public class ScoreDto {
     private int playerOneId;
     private int playerTwoId;
+    private int playerOneName;
+    private int playerTwoName;
     private int idPlayerOneWinner;
     private int idPlayerTwoWinner;
     private boolean isFinishedMatch;

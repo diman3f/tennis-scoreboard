@@ -1,6 +1,7 @@
 package com.diman_3f.tennis_scoreboard.models;
 
 
+import com.diman_3f.tennis_scoreboard.entities.Player;
 import com.diman_3f.tennis_scoreboard.services.TennisMatchState;
 import lombok.*;
 
@@ -25,6 +26,8 @@ public class OngoingMatch {
 
     private int playerOneId;
     private int playerTwoId;
+    private Player playerOne;
+    private Player playerTwo;
     private int setOnePlayer;
     private int setTwoPlayer;
     private boolean advantageOnePlayer;
@@ -37,9 +40,9 @@ public class OngoingMatch {
     private TennisMatchState state;
 
 
-    public OngoingMatch(int playerOneId, int playerTwoId) {
-        this.playerOneId = playerOneId;
-        this.playerTwoId = playerTwoId;
+    public OngoingMatch(Player playerOne, Player playerTwo) {
+        this.playerOneId = playerOne.getId();
+        this.playerTwoId = playerTwo.getId();
         this.setOnePlayer = 0;
         this.setTwoPlayer = 0;
         this.advantageOnePlayer = false;
@@ -98,6 +101,13 @@ public class OngoingMatch {
         throw new NoSuchElementException("Матч не закончен, победитель не определен");
     }
 
+    public Player getWinner() {
+        if (winnerPlayerId == playerOneId) {
+            return playerOne;
+        }
+        return playerTwo;
+    }
+
 
     public int getSetPlayer(int playerId) {
         if (playerId == playerOneId) {
@@ -110,7 +120,6 @@ public class OngoingMatch {
     public void setWinnerPlayerId(int playerId) {
         winnerPlayerId = playerId;
     }
-
 
 
     public int getPointTieBreak(int playerId) {

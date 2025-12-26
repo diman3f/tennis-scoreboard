@@ -7,13 +7,12 @@ import lombok.AllArgsConstructor;
 public class MatchModelMapper implements MatchMapper {
 
 
-
     @Override
     public Match matchToTennisMatchEntity(OngoingMatch match) {
-        Match tennisMatchEntity = new Match();
-//        tennisMatchEntity.setPlayer1(match.getPlayerOneId());
-//        tennisMatchEntity.setPlayer2(match.getPlayerTwoId());
-//        tennisMatchEntity.setWinner(match.getIdPlayerWinnerMatch());
-        return tennisMatchEntity;
+        return Match.builder()
+                .player1(match.getPlayerOne())
+                .player2(match.getPlayerTwo())
+                .winner(match.getWinner())
+                .build();
     }
 }

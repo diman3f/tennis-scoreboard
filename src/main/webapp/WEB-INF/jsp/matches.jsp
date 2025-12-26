@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,47 +46,37 @@
                     <button class="btn-filter">Reset Filter</button>
                 </a>
             </div>
-        </div>
 
+        </div>
         <table class="table-matches">
-            <tr>
-                <th>${requestScope.get("playerOne")}</th>
-                <th>${requestScope.get("playerTwo")}</th>
-                <th>${requestScope.get("winner")}</th>
-            </tr>
-            <tr>
-                <td>${requestScope.get("playerOne")}</td>
-                <td>${requestScope.get("playerTwo")}</td>
-                <td><span class="winner-name-td">${requestScope.get("winner")}</span></td>
-            </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Roger Federer</span></td>
-            </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Rafael Nadal</span></td>
-            </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Roger Federer</span></td>
-            </tr>
-            <tr>
-                <td>Rafael Nadal</td>
-                <td>Roger Federer</td>
-                <td><span class="winner-name-td">Rafael Nadal</span></td>
-            </tr>
+            <c:forEach items="${requestScope.matches}" var="match">
+                <tr>
+                    <td>${match.namePlayerOne}</td>
+                    <td>${match.namePlayerTwo}</td>
+                    <td><span class="winner-name-td">${match.winner}</span></td>
+                </tr>
+            </c:forEach>
         </table>
 
         <div class="pagination">
-            <a class="prev" href="#"> < </a>
-            <a class="num-page current" href="/matches?page=1">1</a>
-            <a class="num-page" href="/matches?page=2">2</a>
-            <a class="num-page" href="/matches?page=3">3</a>
-            <a class="next" href="#"> > </a>
+            <c:if test="${requestScope.currentPage != 1}">
+                <a class="prev" href="/matches?page=${requestScope.currentPage - 1}">Previous< </a>
+            </c:if>
+
+            <c:forEach begin="1" end="${requestScope.noOfPage}" var="i">
+                <c:choose>
+                    <c:when test="${requestScope.currentPage eq i}">
+                        <a class="num-page current">${i}</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="num-page current" href="/matches?page=${i}">${i}</a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+
+            <c:if test="${requestScope.currentPage lt requestScope.noOfPage}">
+                <a class="next" href="/matches?page=${requestScope.currentPage + 1}"> Next </a>
+            </c:if>
         </div>
     </div>
 </main>
