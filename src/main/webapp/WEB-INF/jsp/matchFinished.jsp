@@ -27,14 +27,13 @@
         <div>
             <nav class="nav-links">
                 <a class="nav-link" href="/home">Home</a>
-                <a class="nav-link" href="#">Matches</a>
+                <a class="nav-link" href="/matches?page=1">Matches</a>
             </nav>
         </div>
     </section>
 </header>
 <main>
     <div class="container">
-        <h1>Current match ${requestScope.uuid}</h1>
         <div class="current-match-image"></div>
         <section class="score">
             <table class="table">
@@ -42,37 +41,21 @@
                 <tr>
                     <th class="table-text">Player</th>
                     <th class="table-text">Sets</th>
-                    <th class="table-text">Games</th>
-                    <th class="table-text">Points</th>
                     <th class="table-text">Winner</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="player1">
-                    <td class="table-text">${requestScope.id}</td>
+                    <td class="table-text">${requestScope.dto.playerOneName}</td>
                     <td class="table-text">${requestScope.dto.setOne}</td>
-                    <td class="table-text">${requestScope.dto.gameOne}</td>
-                    <td class="table-text">${requestScope.dto.pointOne}</td>
-                    <td class="table-text">
-                        <form method="post" , action="/match-score?uuid=${requestScope.uuid}">
-                            <input type="hidden" name="playerId" value="${requestScope.dto.playerOneId}">
-                            <button type="submit" class="score-btn">Score</button>
-                        </form>
-                    </td>
-                    <td class="table-text">${requestScope.dto.idPlayerOneWinner}</td>
                 </tr>
                 <tr class="player2">
-                    <td class="table-text">${requestScope.id}</td>
+                    <td class="table-text">${requestScope.dto.playerTwoName}</td>
                     <td class="table-text">${requestScope.dto.setTwo}</td>
-                    <td class="table-text">${requestScope.dto.gameTwo}</td>
-                    <td class="table-text">${requestScope.dto.pointTwo}</td>
-                    <td class="table-text">${requestScope.dto.pointTwo}</td>
-                        <form method="post" action="/match-score?uuid=${requestScope.uuid}">
-                            <input type="hidden" name="playerId" value="${requestScope.dto.playerTwoId}">
-                            <button type="submit" class="score-btn">Score</button>
-                        </form>
-                    </td>
-                    <td class="table-text">${requestScope.dto.idPlayerTwoWinner}</td>
+                </tr>
+
+                <tr class="winner">
+                    <td class="table-text">${requestScope.dto.nameWinner}</td>
                 </tr>
                 </tbody>
             </table>

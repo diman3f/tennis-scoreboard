@@ -1,6 +1,7 @@
 package com.diman_3f.tennis_scoreboard.services;
 
 import com.diman_3f.tennis_scoreboard.TennisPoints;
+import com.diman_3f.tennis_scoreboard.dto.MatchResultDto;
 import com.diman_3f.tennis_scoreboard.dto.ScoreDto;
 import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
 
@@ -27,11 +28,13 @@ public class ScoreDtoFormatter {
 
         return ScoreDto.builder()
                 .playerOneId(idPlayerOne)
+                .playerOneName(match.getPlayerOne().getName())
                 .pointOne(getStringPoint(pointOne))
                 .gameOne(match.getGamePlayer(idPlayerOne))
                 .setOne(match.getSetOnePlayer())
 
                 .playerTwoId(idPlayerTwo)
+                .playerTwoName(match.getPlayerTwo().getName())
                 .pointTwo(getStringPoint(pointTwo))
                 .gameTwo(match.getGamePlayer(idPlayerTwo))
                 .setTwo(match.getSetTwoPlayer())
@@ -77,8 +80,9 @@ public class ScoreDtoFormatter {
     private ScoreDto getFinishedMatch(OngoingMatch match) {
         ScoreDto dto = getRegularScore(match);
         dto.setFinishedMatch(match.isMatchFinished());
-        dto.setIdPlayerOneWinner(match.getWinnerPlayerId());
-        dto.setIdPlayerTwoWinner(match.getWinnerPlayerId());
+        dto.setPlayerOneName(match.getPlayerOne().getName());
+        dto.setPlayerTwoName(match.getPlayerTwo().getName());
+        dto.setNameWinner(match.getWinner().getName());
         dto.setPage("match-score_finished");
         return dto;
     }

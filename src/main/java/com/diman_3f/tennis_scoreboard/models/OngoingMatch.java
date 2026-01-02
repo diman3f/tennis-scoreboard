@@ -43,6 +43,8 @@ public class OngoingMatch {
     public OngoingMatch(Player playerOne, Player playerTwo) {
         this.playerOneId = playerOne.getId();
         this.playerTwoId = playerTwo.getId();
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
         this.setOnePlayer = 0;
         this.setTwoPlayer = 0;
         this.advantageOnePlayer = false;

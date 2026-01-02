@@ -2,12 +2,15 @@ package com.diman_3f.tennis_scoreboard.dao;
 
 import com.diman_3f.tennis_scoreboard.entities.Player;
 import com.diman_3f.tennis_scoreboard.context.UtilSessionFactory;
+import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.w3c.dom.ranges.RangeException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class PlayerDao {
 
@@ -32,22 +35,30 @@ public class PlayerDao {
         }
     }
 
-    public Player findByName(String namePlayer) {
+    public Player save(Player player) {
+        Transaction transaction = null;
         try (Session session = UtilSessionFactory.getSession()) {
-            Transaction transaction = session.beginTransaction();
-
-            String hql = "from Player player where player.name=:name_player";
-            Query query = session.createQuery(hql, Player.class);
-            query.setParameter("name_player", namePlayer);
-            List<Player> list = query.getResultList();
+            transaction = session.beginTransaction();
+            session.persist(player);
             transaction.commit();
-            for (Player player : list) {
-                if (player.getName().equals(namePlayer)) {
-                    return player;
-                }
-            }
+            return player;
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Объект уже существует");
         }
-        throw new NoSuchElementException(String.format("Player name %s", namePlayer + " not found"));
     }
 
+
+    public Optional<Player> findByName(String namePlayer) {
+        try (Session session = UtilSessionFactory.getSession()) {
+            Transaction transaction = session.beginTransaction();
+            String hql = "from Player player where player.name=:name_player";
+            Query query = session.createQuery(hql, Player.class);
+            Player name_player = (Player) query.setParameter("name_player", namePlayer).getSingleResult();
+            transaction.commit();
+            return Optional.of(name_player);
+        } catch (PersistenceException e) {
+            return Optional.empty();
+        }
+    }
 }
+

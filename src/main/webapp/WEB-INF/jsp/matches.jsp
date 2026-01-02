@@ -37,12 +37,13 @@
         <h1>Matches</h1>
         <div class="input-container">
             <form method="GET" action="/matches">
-                <input class="input-filter" placeholder="Filter by name" type="text" name="name" required/>
+                <input type="text" name="page" value="1" style="display:none" >
+                <input class="input-filter" placeholder="Filter by name" type="text" name=filter_by_player_name required/>
                 <input type="submit" style="display:none"></form>
             <div class="form-container center">
             </div>
             <div>
-                <a href="#">
+                <a href="/matches?page=1">
                     <button class="btn-filter">Reset Filter</button>
                 </a>
             </div>

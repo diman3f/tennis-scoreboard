@@ -7,6 +7,7 @@ import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -32,15 +33,21 @@ public class OngoingMatchesService {
     }
 
 
-
     public UUID createCurrentMatch(String namePlayer1, String namePlayer2) {
 
-        Player onePlayer = playerDao.findByName(namePlayer1);
-        Player twoPlayer = playerDao.findByName(namePlayer2);
 
+        Optional<Player> onePlayer = playerDao.findByName(namePlayer1);
+        if (!onePlayer.isPresent()) {
+            onePlayer = Optional.of(playerDao.save(new Player(0, namePlayer1)));
+        }
+
+        Optional<Player> twoPlayer = playerDao.findByName(namePlayer2);
+        if (!twoPlayer.isPresent()) {
+            twoPlayer = Optional.of(playerDao.save(new Player(0, namePlayer2)));
+        }
 
         UUID uuid = UUID.randomUUID();
-        OngoingMatch ongoingMatch = new OngoingMatch(onePlayer,twoPlayer);
+        OngoingMatch ongoingMatch = new OngoingMatch(onePlayer.get(), twoPlayer.get());
         matches.put(uuid, ongoingMatch);
         return uuid;
     }

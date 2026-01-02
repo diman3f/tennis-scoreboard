@@ -16,17 +16,26 @@ import java.util.List;
 
 @WebServlet(name = "matches", urlPatterns = "/matches")
 public class Matches extends HttpServlet {
+    // если есть параметр `filter_by_player_name` выводим матчи по этому имени если нет выводим все матчи
+    //
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        int recordPage = 1;
+        int recordPage = 5;
         JPAMatchDao service = ServiceLocator.getService(JPAMatchDao.class);
-        if(req.getParameter("page") != null) {
+        if (req.getParameter("page") != null) {
             int currentPage = Integer.parseInt(req.getParameter("page"));
             int offset = (currentPage - 1) * recordPage;
             List<MatchResultDto> matches = service.getMatchWithOffSet(offset, recordPage);
             int noOfRecords = service.count();
-            int noOfPage = (int) Math.ceil(noOfRecords * 1.0 ) / recordPage;
+
+            if (req.getParameter("filter_by_player_name") != null) {
+                matches = service.findByName(req.getParameter("filter_by_player_name"));
+                noOfRecords = matches.size();
+            }
+            int noOfPage = (int) Math.ceil(noOfRecords * 1.0) / recordPage;
+
             req.setAttribute("matches", matches);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("noOfPage", noOfPage);
