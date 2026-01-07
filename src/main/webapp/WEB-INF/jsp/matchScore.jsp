@@ -27,7 +27,7 @@
         <div>
             <nav class="nav-links">
                 <a class="nav-link" href="/home">Home</a>
-                <a class="nav-link" href="#">Matches</a>
+                <a class="nav-link" href="/matches?page=1">Matches</a>
             </nav>
         </div>
     </section>
@@ -48,7 +48,7 @@
                 </thead>
                 <tbody>
                 <tr class="player1">
-                    <td class="table-text">${requestScope.id}</td>
+                    <td class="table-text">${requestScope.dto.playerOneName}</td>
                     <td class="table-text">${requestScope.dto.setOne}</td>
                     <td class="table-text">${requestScope.dto.gameOne}</td>
                     <td class="table-text">${requestScope.dto.pointOne}</td>
@@ -60,7 +60,7 @@
                     </td>
                 </tr>
                 <tr class="player2">
-                    <td class="table-text">${requestScope.id}</td>
+                    <td class="table-text">${requestScope.dto.playerTwoName}</td>
                     <td class="table-text">${requestScope.dto.setTwo}</td>
                     <td class="table-text">${requestScope.dto.gameTwo}</td>
                     <td class="table-text">${requestScope.dto.pointTwo}</td>

@@ -9,22 +9,20 @@ import java.util.UUID;
 public class Main {
     public static void main(String[] args) {
 
-        ApplicationStateInstaller installer = new ApplicationStateInstaller();
-        installer.initializeDefaultDatabase();
 
-        OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
-        UUID uuid = ongoingMatchesService.createCurrentMatch("Ivan", "Oleg");
 
-        OngoingMatch match = ongoingMatchesService.getMatch(String.valueOf(uuid));
 
-        match.setStateMatch(3,5,1,0,0,0, TennisMatchState.REGULAR_STATE);
-
-        System.out.println();
+        System.out.println(isValidName("Иван Иванов"));
 
 
 
 
 
+    }
+    public static boolean isValidName(String name) {
+        boolean result;
+        result =  name.matches("^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$");
+        return result;
     }
 }
 

@@ -1,14 +1,14 @@
 package com.diman_3f.tennis_scoreboard.services;
 
 import com.diman_3f.tennis_scoreboard.context.ServiceLocator;
+import com.diman_3f.tennis_scoreboard.context.Validator;
 import com.diman_3f.tennis_scoreboard.dao.PlayerDao;
+import com.diman_3f.tennis_scoreboard.dto.NewMatchDto;
 import com.diman_3f.tennis_scoreboard.entities.Player;
 import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.net.URLEncoder;
+import java.util.*;
 
 /**
  * Класс для создания новых матчей для учета счета игры.
@@ -33,23 +33,43 @@ public class OngoingMatchesService {
     }
 
 
-    public UUID createCurrentMatch(String namePlayer1, String namePlayer2) {
+    public NewMatchDto createCurrentMatch(NewMatchDto dto) {
+        String namePlayerOne = dto.getNameOnePlayer();
+        String namePlayerTwo = dto.getNameTwoPlayer();
 
 
-        Optional<Player> onePlayer = playerDao.findByName(namePlayer1);
-        if (!onePlayer.isPresent()) {
-            onePlayer = Optional.of(playerDao.save(new Player(0, namePlayer1)));
+
+        if (!(Validator.isValidName(namePlayerOne))) {
+            dto.saveErrors("nameOne", String.format("Имя пользователя %s не соответствует формату Имя Фамилия", namePlayerOne));
+        }
+        if (!(Validator.isValidName(namePlayerTwo))) {
+            dto.saveErrors("nameTwo", String.format("Имя пользователя %s не соответствует формату Имя Фамилия", namePlayerTwo));
+        }
+        if (!Validator.isValidLength(namePlayerOne)) {
+            dto.saveErrors("lengthOne", "Не допускается длина более 50 символов");
+        }
+        if (!Validator.isValidLength(namePlayerTwo)) {
+            dto.saveErrors("lengthTwo", "Не допускается длина более 50 символов");
         }
 
-        Optional<Player> twoPlayer = playerDao.findByName(namePlayer2);
+
+        Optional<Player> onePlayer = playerDao.findByName(namePlayerOne);
+        if (!onePlayer.isPresent()) {
+            onePlayer = Optional.of(playerDao.save(new Player(0, namePlayerOne)));
+        }
+
+        Optional<Player> twoPlayer = playerDao.findByName(namePlayerTwo);
         if (!twoPlayer.isPresent()) {
-            twoPlayer = Optional.of(playerDao.save(new Player(0, namePlayer2)));
+            twoPlayer = Optional.of(playerDao.save(new Player(0, namePlayerTwo)));
         }
 
         UUID uuid = UUID.randomUUID();
-        OngoingMatch ongoingMatch = new OngoingMatch(onePlayer.get(), twoPlayer.get());
+        Player playerOne = onePlayer.get();
+        Player playerTwo = twoPlayer.get();
+        OngoingMatch ongoingMatch = new OngoingMatch(playerOne, playerTwo);
         matches.put(uuid, ongoingMatch);
-        return uuid;
+        dto.setUuid(uuid);
+        return dto;
     }
 
     public OngoingMatch getMatch(String uuid) {

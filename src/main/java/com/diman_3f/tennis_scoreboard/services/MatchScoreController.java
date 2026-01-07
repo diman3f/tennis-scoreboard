@@ -38,10 +38,7 @@ public class MatchScoreController {
         int id = Integer.parseInt(playerId);
         OngoingMatch updateMatch = scoreCalculationService.upPoint(id, ongoingMatchesService.getMatch(uuid));
         if (updateMatch.isMatchFinished()) {
-            int winnerPlayerId = updateMatch.getWinnerPlayerId();
-            updateMatch.getPlayerOneId();
-            updateMatch.getPlayerTwoId();
-            finishedMatchesPersistenceService.saveMatch(new Match());
+            finishedMatchesPersistenceService.saveMatch(updateMatch);
             return dtoFormatter.createDto(updateMatch);
         }
         return dtoFormatter.createDto(updateMatch);

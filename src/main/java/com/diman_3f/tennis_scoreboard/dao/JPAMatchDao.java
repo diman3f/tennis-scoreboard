@@ -56,7 +56,7 @@ public class JPAMatchDao implements MatchDao {
             return matches.size();
         } catch (RuntimeException e) {
             transaction.rollback();
-            throw new RuntimeException("ошибка получения колчество записей");
+            throw new RuntimeException("ошибка получения количества записей");
         }
     }
 
@@ -109,7 +109,7 @@ public class JPAMatchDao implements MatchDao {
     }
 
     @Override
-    public MatchResultDto findByName(String name) {
+    public List<MatchResultDto> findByName(String name) {
         Transaction transaction = null;
         try (Session session = UtilSessionFactory.getSession()) {
             transaction = session.beginTransaction();
@@ -121,10 +121,13 @@ public class JPAMatchDao implements MatchDao {
 
             Query<Match> query = session.createQuery(hql, Match.class);
             Query<Match> result = query.setParameter("namePlayer", name);
-            Match singleResult = result.getSingleResult();
-            MatchResultDto matchPlayerName = new MatchResultDto(singleResult.getPlayer1().getName(), singleResult.getPlayer2().getName(), singleResult.getWinner().getName());
+            List<Match> resultList = query.getResultList();
+            List<MatchResultDto> matches = new ArrayList<>();
+            for(Match match : resultList) {
+                matches.add(new MatchResultDto(match.getPlayer1().getName(), match.getPlayer2().getName(), match.getWinner().getName()));
+            }
             transaction.commit();
-            return matchPlayerName;
+            return matches;
         } catch (RuntimeException e) {
             throw new NoSuchElementException("");
         }
@@ -153,7 +156,7 @@ public class JPAMatchDao implements MatchDao {
     private List<MatchResultDto> toMatch(List<Match> matches) {
         List<MatchResultDto> dto = new ArrayList<>();
         for (Match match : matches) {
-            dto.add(new MatchResultDto(match.getPlayer1().getName(), match.getPlayer2().getName(), match.getWinner().getName()));
+            dto.add(new MatchResultDto( match.getPlayer1().getName(), match.getPlayer2().getName(), match.getWinner().getName()));
         }
         return dto;
     }

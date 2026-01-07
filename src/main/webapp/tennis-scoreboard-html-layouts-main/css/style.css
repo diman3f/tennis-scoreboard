@@ -271,7 +271,7 @@ footer {
     padding-left: 10px;
 }
 
-.player1, .player2 {
+.player1, .player2, .winner {
     font-size: 40px;
 }
 
@@ -444,11 +444,11 @@ footer {
 }
 
 .table-matches {
-    margin-top: 40px;
+    margin-top: 80px;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     border-collapse: collapse;
-    border: 1px solid #ccc;
+    border: 14px solid #ccc;
 }
 
 .table-matches th {
@@ -483,7 +483,7 @@ footer {
 
 .prev, .next {
     text-decoration: none;
-    font-size: 40px;
+    font-size: 20px;
     color: #000;
 }
 

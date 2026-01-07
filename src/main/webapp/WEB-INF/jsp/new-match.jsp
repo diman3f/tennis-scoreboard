@@ -24,7 +24,7 @@
         <div>
             <nav class="nav-links">
                 <a class="nav-link" href="/home">Home</a>
-                <a class="nav-link" href="#">Matches</a>
+                <a class="nav-link" href="/matches?page=1">Matches</a>
             </nav>
         </div>
     </section>
@@ -36,7 +36,14 @@
             <div class="new-match-image"></div>
             <div class="form-container center">
                 <form method="post" action="/new-match">
-                    <%--@declare id="playerone"--%><%--@declare id="playertwo"--%><p style="color: #ff0000;">Sample error message</p>
+                    <%--@declare id="playerone"--%><%--@declare id="playertwo"--%><p style="color: #ff0000;">
+                        <c:if test="${requestScope.noValidDto.validDto}">
+                        <p style="color: #ff0000;"> ${requestScope.noValidDto.getError("nameOne")} </p>
+                        <p style="color: #ff0000;"> ${requestScope.noValidDto.getError("nameTwo")} </p>
+                        <p style="color: #ff0000;"> ${requestScope.noValidDto.getError("lengthOne")} </p>
+                        <p style="color: #ff0000;"> ${requestScope.noValidDto.getError("lengthTwo")} </p>
+                        </c:if>
+
                     <label class="label-player" for="playerOne">Player ONE</label>
                     <input class="input-player" placeholder="Name" type="text" name="nameOne">
                     <label class="label-player" for="playerTwo">Player TWO</label>

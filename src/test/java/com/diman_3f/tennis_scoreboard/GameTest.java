@@ -6,7 +6,6 @@ public class GameTest {
     @Test
     void isScorePointTied() {
 
-
     }
 
 
