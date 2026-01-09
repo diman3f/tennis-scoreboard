@@ -18,12 +18,13 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @ManyToOne
     @JoinColumn(name = "Player1")
-    private int player1;
-
+    private Player player1;
+    @ManyToOne
     @JoinColumn(name = "Player2")
-    private int player2;
-
+    private Player player2;
+    @ManyToOne
     @JoinColumn(name = "Winner")
-    private int winner;
+    private Player winner;
 }

@@ -1,133 +1,156 @@
 package com.diman_3f.tennis_scoreboard.services;
 
-import com.diman_3f.tennis_scoreboard.TennisPoints;
 import com.diman_3f.tennis_scoreboard.TennisRuleThreshold;
-import com.diman_3f.tennis_scoreboard.dto.ActiveMatchDTO;
-import com.diman_3f.tennis_scoreboard.models.ActiveMatch;
-import com.diman_3f.tennis_scoreboard.models.ScorePlayer;
+import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
+import com.diman_3f.tennis_scoreboard.models.SetMatch;
 
 
 /**
  * класс для изменения полей счета ScorePlayer в текущем матче
  * после изменения полей должен отдать состояние текущего матча
+ * 16.10.25 класс логического счета матча изменяет состояние текущего матча
  */
 
-public class MatchScoreCalculationService extends BaseScoreCalculator {
+public class MatchScoreCalculationService {
 
-    private ActiveMatch match;
-    private ScorePlayer scoreOne;
-    private ScorePlayer scoreTwo;
+    private TennisRuleHandler tennisRuleHandler;
 
-    public MatchScoreCalculationService(ActiveMatch match) {
-        super(match);
-        this.match = match;
-        this.scoreOne = match.getScorePlayerOne();
-        this.scoreTwo = match.getScorePlayerTwo();
+
+    public MatchScoreCalculationService(TennisRuleHandler handler) {
+        this.tennisRuleHandler = handler;
     }
 
-    public ActiveMatch getMatch() {
+    public OngoingMatch upPoint(int playerId, OngoingMatch match) {
+        if (!tennisRuleHandler.isTieBreak(match)) {
+            if (!tennisRuleHandler.isDeuce(match)) {
+                upPointPlayerId(playerId, match);
+                match.setMatchState(TennisMatchState.REGULAR_STATE);
+                if (tennisRuleHandler.hasWinnerInGame(playerId, match)) {
+                    actionResetDefaultFieldGame(match);
+                    upGamePlayerById(playerId, match);
+                    if (tennisRuleHandler.hasWinnerInSet(playerId, match)) {
+                        actionResetDefaultFieldGame(match);
+                        actionResetDefaultFieldSet(match.getSet());
+                        upSetPlayerById(playerId, match);
+                    }
+                }
+            } else {
+                match.setMatchState(TennisMatchState.ADVANTAGE);
+                upPointAdvantageById(playerId, match);
+                checkAdvantagePlayer(playerId, match);
+            }
+        } else {
+            match.setMatchState(TennisMatchState.TIEBREAK);
+            upPointTieBreakPlayerById(playerId, match);
+            if (tennisRuleHandler.hasWinnerInTieBreak(playerId, match)) {
+                actionResetDefaultFieldGame(match);
+                actionResetDefaultFieldSet(match.getSet());
+                upSetPlayerById(playerId, match);
+                match.setMatchState(TennisMatchState.REGULAR_STATE);
+            }
+        }
+        if (tennisRuleHandler.hasWinnerInMatch(playerId, match)) {
+            match.setMatchState(TennisMatchState.FINISHED);
+            match.setWinnerPlayerId(playerId);
+        }
         return match;
     }
 
-    public ActiveMatchDTO upPoint(int playerId) {
-
-        ScorePlayer scorePlayerWinPoint = match.getByPlayerId(playerId);
-        if (isScorePointTied()) {
-            PointScoreCalculator pointScoreCalculator = new PointScoreCalculator(match);
-            pointScoreCalculator.upGamePlayerScore(playerId);
-            return createDto(match);
-        }
-        if (isScoreGameTied()) {
-            PointScoreCalculator pointScoreCalculator = new PointScoreCalculator(match);
-            pointScoreCalculator.upSetPlayerScore(playerId);
-            return createDto(match);
-        }
-        if (hasWinnerInGame(playerId)) {
-            upGamePlayerId(playerId, scorePlayerWinPoint);
-        }
-        if (hasWinnerInSet(scorePlayerWinPoint)) {
-            upSetInScore(playerId, scorePlayerWinPoint);
-        } else upPointPlayerId(playerId);
-        return createDto(match);
-    }
-
-    //todo временный метод переделать на мапинг
-    private ActiveMatchDTO createDto(ActiveMatch match) {
-        ActiveMatchDTO dto = ActiveMatchDTO.builder()
-                .playerOneID(match.getPlayerOneID())
-                .playerTwoID(getMatch().getPlayerTwoID())
-                .onePlayer(match.getScorePlayerOne().toScore())
-                .twoPlayer(match.getScorePlayerTwo().toScore())
-                .build();
-        return dto;
-    }
-
-    private void upPointPlayerId(int playerId) {
-        ScorePlayer score = match.getByPlayerId(playerId);
-        if (TennisPoints.ZERO.getValue() == score.getPoint()) {
-            score.setPoint(TennisPoints.ONE_POINT.getValue());
-        } else if (TennisPoints.ONE_POINT.getValue() == score.getPoint()) {
-            score.setPoint(TennisPoints.TWO_POINT.getValue());
-        } else if (TennisPoints.TWO_POINT.getValue() == score.getPoint()) {
-            score.setPoint(TennisPoints.THREE_POINT.getValue());
+    private void checkAdvantagePlayer(int playerId, OngoingMatch match) {
+        int differentPoints = Math.abs(match.getAdvantageOnePoint() - match.getAdvantageTwoPoint());
+        if (differentPoints == TennisRuleThreshold.MIN_POINT_TO_WIN_ADVANTAGE.getValue()) {
+            upGamePlayerById(playerId, match);
+            resetAdvantagePoints(match);
+            actionResetDefaultFieldGame(match);
+            match.setMatchState(TennisMatchState.REGULAR_STATE);
+        } else if (differentPoints == TennisRuleThreshold.MIN_DIFFERENT_POINT_ADVANTAGE_PLAYER.getValue()) {
+            resetAdvantageExceptAdvantageById(playerId, match);
+            setAdvantagePlayer(playerId, match);
+        } else if (differentPoints == TennisRuleThreshold.DIFFERENT_POINT_DEUCE_STATE.getValue()) {
+            resetAdvantageFields(match);
         }
     }
 
-
-    private boolean hasWinnerInGame(int playerId) {
-        ScorePlayer score = match.getByPlayerId(playerId);
-        return hasMinPointOnScoreToWinGame(score) & isRuleByDifferentPointDone();
+    private void actionResetDefaultFieldGame(OngoingMatch match) {
+        match.getGame().resetFieldDefault();
+        match.setAdvantageOnePlayer(false);
+        match.setAdvantageTwoPlayer(false);
     }
 
-    private boolean hasMinPointOnScoreToWinGame(ScorePlayer score) {
-        return score.getPoint() == TennisPoints.THREE_POINT.getValue();
+    private void actionResetDefaultFieldSet(SetMatch set) {
+        set.resetFieldDefault();
     }
 
-    private boolean isRuleByDifferentPointDone() {
-        return scoreOne.getPoint() <= TennisPoints.TWO_POINT.getValue() ||
-                scoreTwo.getPoint() <= TennisPoints.TWO_POINT.getValue();
+    private void resetAdvantageExceptAdvantageById(int playerId, OngoingMatch match) {
+        match.setAdvantageOnePlayer(false);
+        match.setAdvantageTwoPlayer(false);
+        if (playerId == match.getPlayerOneId()) {
+            match.setAdvantageOnePlayer(true);
+        } else {
+            match.setAdvantageTwoPlayer(true);
+        }
     }
 
-
-    private void upGamePlayerId(int playerId, ScorePlayer score) {
-        scoreOne.setPoint(TennisPoints.ZERO.getValue());
-        scoreTwo.setPoint(TennisPoints.ZERO.getValue());
-        score.setGame(score.getGame() + TennisPoints.GAME.getValue());
-    }
-
-
-    private void upSetInScore(int playerId, ScorePlayer score) {
-        scoreOne.setPoint(TennisPoints.ZERO.getValue());
-        scoreTwo.setPoint(TennisPoints.ZERO.getValue());
-        scoreOne.setGame(TennisPoints.ZERO.getValue());
-        scoreTwo.setGame(TennisPoints.ZERO.getValue());
-        score.setSet(score.getSet() + TennisPoints.SET.getValue());
+    private void resetAdvantagePoints(OngoingMatch match) {
+        match.setAdvantageOnePoint(0);
+        match.setAdvantageTwoPoint(0);
     }
 
 
-    private boolean hasWinnerInSet(ScorePlayer score) {
-        return hasMinGameOnScoreToWinSet(score) & isRuleByDifferentGameDone();
+    private void resetAdvantageFields(OngoingMatch match) {
+        resetAdvantagePoints(match);
+        match.setAdvantageOnePlayer(false);
+        match.setAdvantageTwoPlayer(false);
     }
 
-    private boolean hasMinGameOnScoreToWinSet(ScorePlayer score) {
-        return score.getGame() >= TennisRuleThreshold.MIN_GAME_TO_WIN_SET.getValue();
+
+    private void upPointPlayerId(int playerId, OngoingMatch match) {
+        if (playerId == match.getPlayerOneId()) {
+            match.upPointOnePlayer();
+        } else {
+            match.upPointTwoPlayer();
+        }
     }
 
-    private boolean isRuleByDifferentGameDone() {
-        return scoreOne.getGame() - scoreTwo.getGame() >= TennisRuleThreshold.MIN_DIFFERENT_POINT_TO_WIN_SET.getValue() ||
-                scoreTwo.getGame() - scoreOne.getGame() >= TennisRuleThreshold.MIN_DIFFERENT_POINT_TO_WIN_SET.getValue();
+    public void upSetPlayerById(int playerId, OngoingMatch match) {
+        if (playerId == match.getPlayerOneId()) {
+            match.upSetOnePlayer();
+        } else {
+            match.upSetTwoPlayer();
+        }
     }
 
-    private boolean isScorePointTied() { //todo установка поля больше меньше, для отображения AD, нужно переделать на AD если перевес в одно очко
-        ScorePlayer scorePlayerOne = match.getScorePlayerOne();
-        ScorePlayer scorePlayerTwo = match.getScorePlayerTwo();
-        boolean result = TennisPoints.THREE_POINT.getValue() == scorePlayerOne.getPoint() &&
-                TennisPoints.THREE_POINT.getValue() == scorePlayerTwo.getPoint();
-        return result;
+    public void upGamePlayerById(int playerId, OngoingMatch match) {
+        if (playerId == match.getPlayerOneId()) {
+            match.upGameOnePlayer();
+        } else {
+            match.upGameTwoPlayer();
+        }
     }
 
-    private boolean isScoreGameTied() {
-        return TennisPoints.GAME_EQUALS.getValue() == scoreOne.getGame() &&
-                TennisPoints.GAME_EQUALS.getValue() == scoreTwo.getGame();
+    public void setAdvantagePlayer(int playerId, OngoingMatch match) {
+        if (playerId == match.getPlayerOneId()) {
+            match.setAdvantageOnePlayer(true);
+        } else {
+            match.setAdvantageTwoPlayer(true);
+        }
+    }
+
+
+    public void upPointTieBreakPlayerById(int playerId, OngoingMatch match) {
+        if (playerId == match.getPlayerOneId()) {
+            match.getSet().upPointTieBreakOnePlayer();
+        } else {
+            match.getSet().upPointTieBreakTwoPlayer();
+        }
+    }
+
+
+    private void upPointAdvantageById(int playerId, OngoingMatch match) {
+        if (playerId == match.getPlayerOneId()) {
+            match.upPointAdvantageOne();
+        } else {
+            match.upPointAdvantageTwo();
+        }
     }
 }
