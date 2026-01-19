@@ -22,5 +22,4 @@ public class ScoreDto {
     private String pointTwo;
     private int gameTwo;
     private int setTwo;
-
 }

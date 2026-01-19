@@ -17,7 +17,5 @@ public class AppContextListener implements ServletContextListener {
         ServiceLocator.registerService(new JPAMatchDao());
         ServiceLocator.registerService(new TennisRuleHandler());
 
-
-
     }
 }

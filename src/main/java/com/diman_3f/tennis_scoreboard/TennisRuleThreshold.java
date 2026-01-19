@@ -16,12 +16,9 @@ public enum TennisRuleThreshold {
     MIN_SET_TO_WIN_MATCH(2);
 
     private int value;
-
     TennisRuleThreshold(int value) {
         this.value = value;
     }
-
-
 
     public int getValue() {
         return value;

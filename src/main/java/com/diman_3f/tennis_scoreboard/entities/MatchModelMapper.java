@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class MatchModelMapper implements MatchMapper {
-
-
     @Override
     public Match matchToTennisMatchEntity(OngoingMatch match) {
         return Match.builder()

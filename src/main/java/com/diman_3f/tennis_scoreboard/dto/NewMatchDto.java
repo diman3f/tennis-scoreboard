@@ -3,7 +3,6 @@ package com.diman_3f.tennis_scoreboard.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.*;
 
 @Getter
@@ -22,11 +21,6 @@ public class NewMatchDto {
         this.nameTwoPlayer = nameTwoPlayer;
         this.isValidDto = true;
         this.errors = new HashMap<>();
-
-    }
-
-    public boolean hasErrors() {
-        return !errors.isEmpty();
     }
 
     public void saveErrors(String name, String error) {
