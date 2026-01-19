@@ -4,13 +4,6 @@ import com.diman_3f.tennis_scoreboard.TennisRuleThreshold;
 import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
 import com.diman_3f.tennis_scoreboard.models.SetMatch;
 
-
-/**
- * класс для изменения полей счета ScorePlayer в текущем матче
- * после изменения полей должен отдать состояние текущего матча
- * 16.10.25 класс логического счета матча изменяет состояние текущего матча
- */
-
 public class MatchScoreCalculationService {
 
     private TennisRuleHandler tennisRuleHandler;
@@ -112,7 +105,7 @@ public class MatchScoreCalculationService {
         }
     }
 
-    public void upSetPlayerById(int playerId, OngoingMatch match) {
+    private void upSetPlayerById(int playerId, OngoingMatch match) {
         if (playerId == match.getPlayerOneId()) {
             match.upSetOnePlayer();
         } else {
@@ -120,7 +113,7 @@ public class MatchScoreCalculationService {
         }
     }
 
-    public void upGamePlayerById(int playerId, OngoingMatch match) {
+    private void upGamePlayerById(int playerId, OngoingMatch match) {
         if (playerId == match.getPlayerOneId()) {
             match.upGameOnePlayer();
         } else {
@@ -128,7 +121,7 @@ public class MatchScoreCalculationService {
         }
     }
 
-    public void setAdvantagePlayer(int playerId, OngoingMatch match) {
+    private void setAdvantagePlayer(int playerId, OngoingMatch match) {
         if (playerId == match.getPlayerOneId()) {
             match.setAdvantageOnePlayer(true);
         } else {
@@ -136,15 +129,13 @@ public class MatchScoreCalculationService {
         }
     }
 
-
-    public void upPointTieBreakPlayerById(int playerId, OngoingMatch match) {
+    private void upPointTieBreakPlayerById(int playerId, OngoingMatch match) {
         if (playerId == match.getPlayerOneId()) {
             match.getSet().upPointTieBreakOnePlayer();
         } else {
             match.getSet().upPointTieBreakTwoPlayer();
         }
     }
-
 
     private void upPointAdvantageById(int playerId, OngoingMatch match) {
         if (playerId == match.getPlayerOneId()) {

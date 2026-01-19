@@ -1,39 +1,18 @@
 package com.diman_3f.tennis_scoreboard.dao;
 
-import com.diman_3f.tennis_scoreboard.entities.Player;
 import com.diman_3f.tennis_scoreboard.context.UtilSessionFactory;
+import com.diman_3f.tennis_scoreboard.entities.Player;
+import com.diman_3f.tennis_scoreboard.exception.DatabaseException;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.w3c.dom.ranges.RangeException;
+import org.hibernate.exception.ConstraintViolationException;
 
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class PlayerDao {
-
-    public PlayerDao() {
-    }
-
-    public Player findById(int id) {
-        try (Session session = UtilSessionFactory.getSession()) {
-            Transaction transaction = session.beginTransaction();
-            Player player = session.get(Player.class, id);
-            transaction.commit();
-            return player;
-        }
-    }
-
-    public List<Player> findPlayers() {
-        try (Session session = UtilSessionFactory.getSession()) {
-            Transaction transaction = session.beginTransaction();
-            List<Player> players = session.createQuery("from Player", Player.class).getResultList();
-            transaction.commit();
-            return players;
-        }
-    }
 
     public Player save(Player player) {
         Transaction transaction = null;
@@ -42,11 +21,16 @@ public class PlayerDao {
             session.persist(player);
             transaction.commit();
             return player;
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Объект уже существует");
+        } catch (PersistenceException e) {
+            if (e instanceof ConstraintViolationException) {
+                if(transaction != null) {
+                    transaction.rollback();
+                }
+                throw new EntityExistsException("Names players must be different");
+            }
+                throw new DatabaseException("Database not available");
         }
     }
-
 
     public Optional<Player> findByName(String namePlayer) {
         try (Session session = UtilSessionFactory.getSession()) {

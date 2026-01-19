@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,7 +44,7 @@
                         <p style="color: #ff0000;"> ${requestScope.noValidDto.getError("lengthOne")} </p>
                         <p style="color: #ff0000;"> ${requestScope.noValidDto.getError("lengthTwo")} </p>
                         </c:if>
-
+                        <p style="color: #ff0000;"> ${requestScope.message} </p>
                     <label class="label-player" for="playerOne">Player ONE</label>
                     <input class="input-player" placeholder="Name" type="text" name="nameOne">
                     <label class="label-player" for="playerTwo">Player TWO</label>

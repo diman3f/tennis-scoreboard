@@ -16,12 +16,9 @@ import java.util.List;
 
 @WebServlet(name = "matches", urlPatterns = "/matches")
 public class Matches extends HttpServlet {
-    // если есть параметр `filter_by_player_name` выводим матчи по этому имени если нет выводим все матчи
-    //
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         int recordPage = 5;
         JPAMatchDao service = ServiceLocator.getService(JPAMatchDao.class);
         if (req.getParameter("page") != null) {
@@ -35,23 +32,10 @@ public class Matches extends HttpServlet {
                 noOfRecords = matches.size();
             }
             int noOfPage = (int) Math.ceil(noOfRecords * 1.0) / recordPage;
-
             req.setAttribute("matches", matches);
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("noOfPage", noOfPage);
             req.getServletContext().getRequestDispatcher(JspHelper.getPath("matches")).forward(req, resp);
         }
-    }
-
-
-    private List<MatchResultDto> dtoMatches(List<MatchResultDto> dtoMaths, int page) {
-        List<MatchResultDto> result = new ArrayList<>();
-        int limit = 5;
-        int startIndex = 0;
-        int offSetIndex = limit * page;
-        for (int i = startIndex; i < dtoMaths.size(); i++) {
-            result.add(dtoMaths.get(i));
-        }
-        return result;
     }
 }

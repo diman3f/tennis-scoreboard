@@ -1,7 +1,6 @@
 package com.diman_3f.tennis_scoreboard.services;
 
 import com.diman_3f.tennis_scoreboard.TennisPoints;
-import com.diman_3f.tennis_scoreboard.dto.MatchResultDto;
 import com.diman_3f.tennis_scoreboard.dto.ScoreDto;
 import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
 
@@ -73,8 +72,8 @@ public class ScoreDtoFormatter {
 
     private ScoreDto getTiebreak(OngoingMatch match) {
         ScoreDto dto = getRegularScore(match);
-        dto.setPointOne(String.valueOf(match.getSet().getPointOnePlayer()));
-        dto.setPointTwo(String.valueOf(match.getSet().getPointTwoPlayer()));
+        dto.setPointOne(String.valueOf(match.getSet().getPointOneTieBreakPlayer()));
+        dto.setPointTwo(String.valueOf(match.getSet().getPointTwoTieBreakPlayer()));
         return dto;
     }
     private ScoreDto getFinishedMatch(OngoingMatch match) {

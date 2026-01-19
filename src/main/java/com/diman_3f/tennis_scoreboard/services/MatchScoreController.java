@@ -1,22 +1,7 @@
 package com.diman_3f.tennis_scoreboard.services;
 
-//Извлечь текущий матч по uuid
-
-// передать матча в кальякулятор в калькулятор
-
-// проверить завершение матча на основании полученного dto
-
-// матч завершен сохранить через другой сервис, матч не завершен обновить состояние модели матча
-
-
 import com.diman_3f.tennis_scoreboard.dto.ScoreDto;
-import com.diman_3f.tennis_scoreboard.entities.MatchMapper;
-import com.diman_3f.tennis_scoreboard.entities.MatchModelMapper;
-import com.diman_3f.tennis_scoreboard.entities.Match;
 import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
-
-import java.util.UUID;
-
 
 public class MatchScoreController {
 
@@ -24,7 +9,6 @@ public class MatchScoreController {
     private MatchScoreCalculationService scoreCalculationService;
     private FinishedMatchesPersistenceService finishedMatchesPersistenceService;
     private ScoreDtoFormatter dtoFormatter;
-
 
     public MatchScoreController(OngoingMatchesService ongoingMatchesService, MatchScoreCalculationService scoreCalculationService,
                                 FinishedMatchesPersistenceService finishedMatchesPersistenceService) {

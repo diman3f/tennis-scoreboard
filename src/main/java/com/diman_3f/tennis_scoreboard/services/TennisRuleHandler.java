@@ -3,11 +3,7 @@ package com.diman_3f.tennis_scoreboard.services;
 import com.diman_3f.tennis_scoreboard.TennisRuleThreshold;
 import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
 
-import java.util.Map;
-
 public class TennisRuleHandler {
-
-
 
     public boolean isDeuce(OngoingMatch match) {
         int pointOnePlayer = match.getPointPlayer(match.getPlayerOneId());
@@ -20,8 +16,21 @@ public class TennisRuleHandler {
         return hasMinPointOnScoreToWinGame(playerId, match) && isRuleByDifferentPointDone(match);
     }
 
-    private boolean hasMinPointOnScoreToWinGame(int playerId, OngoingMatch match) {
-        return match.getPointPlayer(playerId) == TennisRuleThreshold.MIN_POINT_TO_WIN_GAME.getValue();
+    public boolean hasWinnerInSet(int playerId, OngoingMatch match) {
+        return hasMinGameOnScoreToWinSet(playerId,match) && isRuleByDifferentGameDone(match);
+    }
+
+    public boolean isTieBreak(OngoingMatch match) {
+        return match.getGamePlayer(match.getPlayerOneId()) == TennisRuleThreshold.MIN_GAME_TO_DONE_TIE_BREAK.getValue() &&
+                match.getGamePlayer(match.getPlayerTwoId()) == TennisRuleThreshold.MIN_GAME_TO_DONE_TIE_BREAK.getValue();
+    }
+
+    public boolean hasWinnerInTieBreak(int playerId, OngoingMatch match) {
+        return hasMinPointTieBreakToWinTieBreak(playerId, match) && isRuleByDifferentPointTieBreakDone(match);
+    }
+
+    public boolean hasWinnerInMatch(int playerId, OngoingMatch match) {
+        return hasMinSetOnScoreToWinMatch(playerId, match);
     }
 
     private boolean isRuleByDifferentPointDone(OngoingMatch match) {
@@ -30,8 +39,8 @@ public class TennisRuleHandler {
         return Math.abs(pointOnePlayer - pointTwoPlayer) >= TennisRuleThreshold.MIN_DIFFERENT_POINT_TO_WIN_GAME.getValue();
     }
 
-    public boolean hasWinnerInSet(int playerId, OngoingMatch match) {
-        return hasMinGameOnScoreToWinSet(playerId,match) && isRuleByDifferentGameDone(match);
+    private boolean hasMinPointOnScoreToWinGame(int playerId, OngoingMatch match) {
+        return match.getPointPlayer(playerId) == TennisRuleThreshold.MIN_POINT_TO_WIN_GAME.getValue();
     }
 
     private boolean hasMinGameOnScoreToWinSet(int playerId,OngoingMatch match) {
@@ -45,27 +54,13 @@ public class TennisRuleHandler {
         return Math.abs(gameOnePlayer - gameTwoPlayer) >= TennisRuleThreshold.MIN_DIFFERENT_GAME_TO_WIN_SET.getValue();
     }
 
-    public boolean isTieBreak(OngoingMatch match) {
-        return match.getGamePlayer(match.getPlayerOneId()) == TennisRuleThreshold.MIN_GAME_TO_DONE_TIE_BREAK.getValue() &&
-                match.getGamePlayer(match.getPlayerTwoId()) == TennisRuleThreshold.MIN_GAME_TO_DONE_TIE_BREAK.getValue();
-
-    }
-
-    public boolean hasWinnerInTieBreak(int playerId, OngoingMatch match) {
-        return hasMinPointTieBreakToWinTieBreak(playerId, match) && isRuleByDifferentPointTieBreakDone(match);
-    }
-
     private boolean hasMinPointTieBreakToWinTieBreak(int playerId, OngoingMatch match) {
         return match.getPointTieBreak(playerId) >= TennisRuleThreshold.MIN_POINT_TO_WIN_TIE_BREAK.getValue();
     }
 
     private boolean isRuleByDifferentPointTieBreakDone(OngoingMatch match) {
-        return Math.abs(match.getSet().getPointOnePlayer() - match.getSet().getPointTwoPlayer()) >=
+        return Math.abs(match.getSet().getPointOneTieBreakPlayer() - match.getSet().getPointTwoTieBreakPlayer()) >=
                 TennisRuleThreshold.MIN_DIFFERENT_POINT_TIE_BREAK_TO_WIN_TIE_BREAK.getValue();
-    }
-
-    public boolean hasWinnerInMatch(int playerId, OngoingMatch match) {
-       return hasMinSetOnScoreToWinMatch(playerId, match) && isRuleByDifferentSetDone(match);
     }
 
     private boolean hasMinSetOnScoreToWinMatch(int playerId, OngoingMatch match) {

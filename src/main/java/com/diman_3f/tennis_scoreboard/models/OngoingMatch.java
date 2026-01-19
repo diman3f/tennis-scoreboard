@@ -1,27 +1,12 @@
 package com.diman_3f.tennis_scoreboard.models;
 
-
 import com.diman_3f.tennis_scoreboard.entities.Player;
 import com.diman_3f.tennis_scoreboard.services.TennisMatchState;
-import lombok.*;
-
-import java.util.*;
-
-
-/**
- * Класс для хранения состояния текущего матча для двух игроков
- * Изменение состояния происходит через изменение ScorePlayer другими классами
- * <p>
- * Изменяемые части класса:
- * Не изменяемые части класса:
- * Ограничения:
- * команда из двух игроков
- * имя команды, а не имя игрока
- */
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-
 public class OngoingMatch {
 
     private int playerOneId;
@@ -39,7 +24,6 @@ public class OngoingMatch {
     private SetMatch set;
     private TennisMatchState state;
 
-
     public OngoingMatch(Player playerOne, Player playerTwo) {
         this.playerOneId = playerOne.getId();
         this.playerTwoId = playerTwo.getId();
@@ -54,38 +38,12 @@ public class OngoingMatch {
         this.state = TennisMatchState.REGULAR_STATE;
     }
 
-    public void setStateMatch(int onePoint, int oneGame, int oneSet, int twoPoint, int twoGame, int twoSet, TennisMatchState state) {
-        for (int i = 0; i < onePoint; i++) {
-            this.game.setPointOnePlayer();
-        }
-        for (int i = 0; i < twoPoint; i++) {
-            this.game.setPointTwoPlayer();
-        }
-        for (int i = 0; i < oneGame; i++) {
-            this.set.upGameOnePlayer();
-        }
-        for (int i = 0; i < twoGame; i++) {
-            this.set.upGameTwoPlayer();
-        }
-        this.setOnePlayer = oneSet;
-        this.setTwoPlayer = twoSet;
-        this.state = state;
-    }
-
     public void upPointAdvantageOne() {
         this.advantageOnePoint++;
     }
 
     public void upPointAdvantageTwo() {
         this.advantageTwoPoint++;
-    }
-
-    public int getAdvantagePointById(int playerId) {
-        if (playerId == playerOneId) {
-            return advantageOnePoint;
-        } else {
-            return advantageTwoPoint;
-        }
     }
 
     public void setMatchState(TennisMatchState state) {
@@ -96,20 +54,12 @@ public class OngoingMatch {
         return state == TennisMatchState.FINISHED;
     }
 
-    public int getIdPlayerWinnerMatch() {
-        if (winnerPlayerId != null && state == TennisMatchState.FINISHED) {
-            return winnerPlayerId;
-        }
-        throw new NoSuchElementException("Матч не закончен, победитель не определен");
-    }
-
     public Player getWinner() {
         if (winnerPlayerId == playerOneId) {
             return playerOne;
         }
         return playerTwo;
     }
-
 
     public int getSetPlayer(int playerId) {
         if (playerId == playerOneId) {
@@ -126,12 +76,11 @@ public class OngoingMatch {
 
     public int getPointTieBreak(int playerId) {
         if (playerId == playerOneId) {
-            return set.getPointOnePlayer();
+            return set.getPointOneTieBreakPlayer();
         } else {
-            return set.getPointTwoPlayer();
+            return set.getPointTwoTieBreakPlayer();
         }
     }
-
 
     public Integer getPointPlayer(int playerId) {
         if (playerId == playerOneId) {
@@ -148,7 +97,6 @@ public class OngoingMatch {
             return set.getGameTwoPlayer();
         }
     }
-
 
     public void upPointOnePlayer() {
         game.setPointOnePlayer();

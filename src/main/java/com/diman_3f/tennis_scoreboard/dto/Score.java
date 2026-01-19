@@ -8,10 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Score {
-
     private int set = 0;
     private int game = 0;
     private int point = 0;
-
-
 }
