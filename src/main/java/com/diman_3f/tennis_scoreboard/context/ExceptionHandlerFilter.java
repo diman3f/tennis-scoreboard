@@ -15,25 +15,24 @@ import java.io.IOException;
 
 @WebFilter(urlPatterns = "/*")
 public class ExceptionHandlerFilter extends HttpFilter {
-    private final int NOT_FOUND = 404;
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+
         try {
             chain.doFilter(req,res);
         } catch (RuntimeException e) {
             if (e instanceof EntityExistsException) {
-                req.setAttribute("error", "403");
+                req.setAttribute("error", HttpStatus.INTERNAL_SERVER_ERROR);
                 req.setAttribute("message", e.getMessage());
                 forwardToErrorPage("new-match", req, res);
             } else if (e instanceof ValidationException) {
-                req.setAttribute("error", "401");
+                req.setAttribute("error", HttpStatus.BAD_REQUEST);
                 req.setAttribute("message", e.getMessage());
                 forwardToErrorPage("new-match", req, res);
             } else if (e instanceof InternalServerError) {
-                req.setAttribute("error", "500");
+                req.setAttribute("error", HttpStatus.INTERNAL_SERVER_ERROR);
                 req.setAttribute("message", e.getMessage());
                 forwardToErrorPage("error", req, res);
-            } else {
             }
         }
     }
