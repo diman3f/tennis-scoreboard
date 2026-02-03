@@ -21,7 +21,7 @@ public abstract class Score<T> { //абстрактный счет которы�
     }
 
     public T getScoreOppositePlayer(int playerNumber) {
-        return playerScore.get(playerNumber == 1 ? 1 : 0);
+        return playerScore.get(playerNumber == 0 ? 1 : 0);
     }
 
     public void setScorePlayer(int playerNumber, T score) {
@@ -29,7 +29,7 @@ public abstract class Score<T> { //абстрактный счет которы�
     }
 
     public void setScoreOppositePlayer(int playerNumber, T score) {
-        playerScore.set(playerNumber == 1 ? 1 : 0, score);
+        playerScore.set(playerNumber == 0 ? 1 : 0, score);
     }
 
     protected abstract State pointWon(int numberPlayer);

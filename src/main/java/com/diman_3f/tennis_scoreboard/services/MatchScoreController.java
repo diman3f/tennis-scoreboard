@@ -20,7 +20,7 @@ public class MatchScoreController {
 
     public ScoreDto addPoint(String playerId, String uuid) {
         int id = Integer.parseInt(playerId);
-        OngoingMatch updateMatch = scoreCalculationService.upPoint(id, ongoingMatchesService.getMatch(uuid));
+        OngoingMatch updateMatch = scoreCalculationService.upPoint(id, ongoingMatchesService.getMatch(uuid),0);
         if (updateMatch.isMatchFinished()) {
             finishedMatchesPersistenceService.saveMatch(updateMatch);
             return dtoFormatter.createDto(updateMatch);

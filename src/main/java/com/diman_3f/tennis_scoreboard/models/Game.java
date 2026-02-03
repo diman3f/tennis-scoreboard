@@ -3,9 +3,6 @@ package com.diman_3f.tennis_scoreboard.models;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Getter
 @Setter
 public class Game {
@@ -22,6 +19,13 @@ public class Game {
         pointOnePlayer = 0;
         pointTwoPlayer = 0;
 
+    }
+
+    public void setPointOne(int point) {
+        this.pointOnePlayer = point;
+    }
+    public void setPointTwo(int point) {
+        this.pointTwoPlayer = point;
     }
 
 
