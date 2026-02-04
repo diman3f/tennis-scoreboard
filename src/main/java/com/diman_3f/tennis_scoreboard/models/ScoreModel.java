@@ -11,13 +11,12 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ScorePlayer {
-    private int tieBreak = 0;
-    private int equalsGame = 0;
-    private int advantage = 0;
-    private int equalsSetGame = 0;
-    private int set = 0;
-    private int game = 0;
-    private int point = 0;
+public class ScoreModel {
+    private int setOne;
+    private int setTwo;
+    private int gameOne;
+    private int gameTwo;
+    private int pointOne;
+    private int pointTwo;
 
 }
