@@ -7,19 +7,18 @@ import lombok.*;
 @ToString
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 
 public class ScoreDto {
     private int playerOneId;
     private int playerTwoId;
     private String playerOneName;
     private String playerTwoName;
-    private String nameWinner;
-    private boolean isFinishedMatch;
-    private String page;
-    private String pointOne;
-    private int gameOne;
     private int setOne;
-    private String pointTwo;
-    private int gameTwo;
+    private int gameOne;
+    private String pointOne;
     private int setTwo;
+    private int gameTwo;
+    private String pointTwo;
+    private boolean isFinished;
 }

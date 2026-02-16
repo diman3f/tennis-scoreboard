@@ -18,14 +18,16 @@ public class MatchScoreController {
         this.dtoFormatter = new ScoreDtoFormatter();
     }
 
-    public ScoreDto addPoint(String playerId, String uuid) {
-        int id = Integer.parseInt(playerId);
-        OngoingMatch updateMatch = scoreCalculationService.upPoint(id, ongoingMatchesService.getMatch(uuid),0);
+    public ScoreDto addPoint(int numberPlayer, String uuid) {
+        OngoingMatch updateMatch = scoreCalculationService.upPoint(numberPlayer, ongoingMatchesService.getMatch(uuid));
         if (updateMatch.isMatchFinished()) {
             finishedMatchesPersistenceService.saveMatch(updateMatch);
-            return dtoFormatter.createDto(updateMatch);
+            ScoreDto scoreDto = new ScoreDto();
+            scoreDto.setFinished(true);
+            return scoreDto;
         }
-        return dtoFormatter.createDto(updateMatch);
+        ScoreDto score = updateMatch.getScore();
+        return score;
     }
 }
 

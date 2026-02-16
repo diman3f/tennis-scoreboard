@@ -23,8 +23,8 @@
         </div>
         <div>
             <nav class="nav-links">
-                <a class="nav-link" href="#">Home</a>
-                <a class="nav-link" href="#">Matches</a>
+                <a class="nav-link" href="/index">Home</a>
+                <a class="nav-link" href="/matches?page=1">Matches</a>
             </nav>
         </div>
     </section>

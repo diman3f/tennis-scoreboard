@@ -54,7 +54,7 @@
                     <td class="table-text">${requestScope.dto.pointOne}</td>
                     <td class="table-text">
                         <form method="post" , action="/match-score?uuid=${requestScope.uuid}">
-                            <input type="hidden" name="playerId" value="${requestScope.dto.playerOneId}">
+                            <input type="hidden" name="playerWon" value="onePlayerWinPoint">
                             <button type="submit" class="score-btn">Score</button>
                         </form>
                     </td>
@@ -66,7 +66,7 @@
                     <td class="table-text">${requestScope.dto.pointTwo}</td>
                     <td class="table-text">
                         <form method="post" action="/match-score?uuid=${requestScope.uuid}">
-                            <input type="hidden" name="playerId" value="${requestScope.dto.playerTwoId}">
+                            <input type="hidden" name="playerWon" value="twoPlayerWinPoint">
                             <button type="submit" class="score-btn">Score</button>
                         </form>
 

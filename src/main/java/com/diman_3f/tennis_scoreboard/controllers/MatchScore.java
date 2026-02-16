@@ -32,8 +32,8 @@ public class MatchScore extends HttpServlet {
         req.setAttribute("uuid", uuid);
         OngoingMatchesService service = ServiceLocator.getService(OngoingMatchesService.class);
         OngoingMatch match = service.getMatch(uuid);
-        ScoreDtoFormatter dtoFormatter = new ScoreDtoFormatter();
-        req.setAttribute("dto", dtoFormatter.createDto(match));
+        ScoreDto dto = match.getScore();
+        req.setAttribute("dto", dto);
         getServletContext().getRequestDispatcher(JspHelper.getPath("matchScore"))
                 .forward(req, resp);
     }
@@ -41,15 +41,20 @@ public class MatchScore extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String page;
-        String pageMatchScore = "matchScore";
-        String playerId = req.getParameter("playerId");
+        String playerWon = req.getParameter("playerWon");
+        int numberWonPlayer = 0;
+        if (playerWon.equals("twoPlayerWinPoint")) {
+            numberWonPlayer = 1;
+        }
         String uuid = req.getParameter("uuid");
         req.setAttribute("uuid", uuid);
-        ScoreDto score = controller.addPoint(playerId, uuid);
+        ScoreDto score = controller.addPoint(numberWonPlayer, uuid);
         req.setAttribute("dto", score);
-        if (score.isFinishedMatch()) {
-            page = "matchFinished";
-        } else page = "matchScore";
+        if (score.isFinished()) {
+            page = "index";
+        } else {
+            page = "matchScore";
+        }
         getServletContext().getRequestDispatcher(JspHelper.getPath(page)).
                 forward(req, resp);
     }

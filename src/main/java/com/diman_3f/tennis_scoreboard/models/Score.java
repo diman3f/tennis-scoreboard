@@ -1,13 +1,17 @@
 package com.diman_3f.tennis_scoreboard.models;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Score<T> { //абстрактный счет который представлен парой значений
+@Getter
+public abstract class Score<T> {
 
-    private final List<T> playerScore;  // для хранение пары счета 0 - одна сторона 1 - противоположная сторона
+    private final List<T> playerScore;
+    private final int INDEX_ONE_PLAYER = 0;
+    private final int INDEX_OPPOSITE_PLAYER = 1;
 
-    // получить нулевое значение счета
     protected abstract T getZeroScore();
 
     public Score() {
@@ -21,7 +25,7 @@ public abstract class Score<T> { //абстрактный счет которы�
     }
 
     public T getScoreOppositePlayer(int playerNumber) {
-        return playerScore.get(playerNumber == 0 ? 1 : 0);
+        return playerScore.get(playerNumber == INDEX_ONE_PLAYER ? INDEX_OPPOSITE_PLAYER : INDEX_ONE_PLAYER);
     }
 
     public void setScorePlayer(int playerNumber, T score) {
@@ -29,9 +33,8 @@ public abstract class Score<T> { //абстрактный счет которы�
     }
 
     public void setScoreOppositePlayer(int playerNumber, T score) {
-        playerScore.set(playerNumber == 0 ? 1 : 0, score);
+        playerScore.set(playerNumber == INDEX_ONE_PLAYER ? INDEX_OPPOSITE_PLAYER : INDEX_ONE_PLAYER, score);
     }
 
     protected abstract State pointWon(int numberPlayer);
-
 }

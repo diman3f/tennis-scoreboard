@@ -8,4 +8,15 @@ public enum RegularGamePlayerPoints {
             return RegularGamePlayerPoints.values()[player.ordinal() + 1];
         } else throw new IllegalArgumentException("Cannot be more Advantage");
     }
+
+    public String getNumber() {
+        switch (this) {
+            case ZERO: return "0";
+            case FIFTY: return "15";
+            case THIRTY: return "30";
+            case FORTY: return "40";
+            case ADVANTAGE: return "AD";
+            default: throw new IllegalStateException("Отсутствует такое значение");
+        }
+    }
 }

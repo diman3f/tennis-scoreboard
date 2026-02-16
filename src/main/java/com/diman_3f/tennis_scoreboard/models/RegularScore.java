@@ -11,17 +11,17 @@ public class RegularScore extends GameScore<RegularGamePlayerPoints> {
     protected State pointWon(int numberPlayer) {
         RegularGamePlayerPoints playerScore = getScorePlayer(numberPlayer);
         if (playerScore.ordinal() <= RegularGamePlayerPoints.THIRTY.ordinal()) {
-            setScorePlayer(numberPlayer, RegularGamePlayerPoints.next(playerScore)); // добавить очко игроку
-        } else if (playerScore == RegularGamePlayerPoints.FORTY) { // если счет игрока равен 40
-            if (getScoreOppositePlayer(numberPlayer) == RegularGamePlayerPoints.ADVANTAGE) { // если счет противоположного адвентедж
-                setScoreOppositePlayer(numberPlayer, RegularGamePlayerPoints.FORTY); // снять адвентедж
-            } else if (getScoreOppositePlayer(numberPlayer) == RegularGamePlayerPoints.FORTY) { //если счет счет противоположного 40
-                setScorePlayer(numberPlayer, RegularGamePlayerPoints.ADVANTAGE);// установить текущему адвентедж
+            setScorePlayer(numberPlayer, RegularGamePlayerPoints.next(playerScore));
+        } else if (playerScore == RegularGamePlayerPoints.FORTY) {
+            if (getScoreOppositePlayer(numberPlayer) == RegularGamePlayerPoints.ADVANTAGE) {
+                setScoreOppositePlayer(numberPlayer, RegularGamePlayerPoints.FORTY);
+            } else if (getScoreOppositePlayer(numberPlayer) == RegularGamePlayerPoints.FORTY) {
+                setScorePlayer(numberPlayer, RegularGamePlayerPoints.ADVANTAGE);
             } else {
-                return numberPlayer == 0 ? State.WON_ONE : State.WON_TWO;
+                return numberPlayer == 0 ? State.PLAYER_WON_ONE : State.PLAYER_WON_TWO;
             }
         } else if (playerScore == RegularGamePlayerPoints.ADVANTAGE) {
-            return numberPlayer == 0 ? State.WON_ONE : State.WON_TWO;
+            return numberPlayer == 0 ? State.PLAYER_WON_ONE : State.PLAYER_WON_TWO;
         } else {
             throw new IllegalStateException("pointWon() не вызывается на Advantage");
         }

@@ -29,7 +29,7 @@ public class MatchCreatorServlet extends HttpServlet {
         NewMatchDto match = ServiceLocator.getService(com.diman_3f.tennis_scoreboard.services.OngoingMatchesService.class)
                 .createCurrentMatch(dto);
         if (match.isValidDto()) {
-            String uuid = URLEncoder.encode(String.valueOf(dto.getUuid()), "UTF-8");
+            String uuid = URLEncoder.encode(String.valueOf(match.getUuid()), "UTF-8");
             String path = req.getContextPath() + "/match-score?uuid=" + uuid;
             resp.sendRedirect(path);
         } else {
