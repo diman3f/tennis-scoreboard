@@ -1,6 +1,5 @@
 package com.diman_3f.tennis_scoreboard.utils;
 
-
 public final class Validator {
     private final static int LENGTH_NAME = 15;
 

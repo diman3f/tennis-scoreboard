@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,23 +9,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/tennis-scoreboard-html-layouts-main/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/tennis-scoreboard-html-layouts-main/css/style.css">
 
-    <script src="/tennis-scoreboard-html-layouts-main/js/app.js"></script>
+    <script src="${pageContext.request.contextPath}/tennis-scoreboard-html-layouts-main/js/app.js"></script>
 </head>
 <body>
 <header class="header">
     <section class="nav-header">
         <div class="brand">
             <div class="nav-toggle">
-                <img src="/tennis-scoreboard-html-layouts-main/images/menu.png" alt="Logo" class="logo">
+                <img src="${pageContext.request.contextPath}/tennis-scoreboard-html-layouts-main/images/menu.png" alt="Logo" class="logo">
             </div>
             <span class="logo-text">TennisScoreboard</span>
         </div>
         <div>
             <nav class="nav-links">
-                <a class="nav-link" href="/index">Home</a>
-                <a class="nav-link" href="/matches?page=1">Matches</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/home">Home</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/matches?page=1">Matches</a>
             </nav>
         </div>
     </section>
@@ -35,12 +36,12 @@
         <p>Manage your tennis matches, record results, and track rankings</p>
         <div class="welcome-image"></div>
         <div class="form-container center">
-            <a class="homepage-action-button" href="/new-match">
+            <a class="homepage-action-button" href="${pageContext.request.contextPath}/new-match">
                 <button class="btn start-match">
                     Start a new match
                 </button>
             </a>
-            <a class="homepage-action-button" href="/matches?page=1">
+            <a class="homepage-action-button" href="${pageContext.request.contextPath}/matches?page=1">
                 <button class="btn view-results">
                     View match results
                 </button>

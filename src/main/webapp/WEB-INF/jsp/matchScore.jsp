@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../tennis-scoreboard-html-layouts-main/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/tennis-scoreboard-html-layouts-main/css/style.css">
 
     <script src="js/app.js"></script>
 </head>
@@ -20,21 +20,20 @@
     <section class="nav-header">
         <div class="brand">
             <div class="nav-toggle">
-                <img src="../../tennis-scoreboard-html-layouts-main/images/menu.png" alt="Logo" class="logo">
+                <img src="${pageContext.request.contextPath}/tennis-scoreboard-html-layouts-main/images/menu.png" alt="Logo" class="logo">
             </div>
             <span class="logo-text">TennisScoreboard</span>
         </div>
         <div>
             <nav class="nav-links">
-                <a class="nav-link" href="/home">Home</a>
-                <a class="nav-link" href="/matches?page=1">Matches</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/home">Home</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/matches?page=1">Matches</a>
             </nav>
         </div>
     </section>
 </header>
 <main>
     <div class="container">
-        <h1>Current match ${requestScope.uuid}</h1>
         <div class="current-match-image"></div>
         <section class="score">
             <table class="table">
@@ -53,7 +52,7 @@
                     <td class="table-text">${requestScope.dto.gameOne}</td>
                     <td class="table-text">${requestScope.dto.pointOne}</td>
                     <td class="table-text">
-                        <form method="post" , action="/match-score?uuid=${requestScope.uuid}">
+                        <form method="post" , action="${pageContext.request.contextPath}/match-score?uuid=${requestScope.uuid}">
                             <input type="hidden" name="playerWon" value="onePlayerWinPoint">
                             <button type="submit" class="score-btn">Score</button>
                         </form>
@@ -65,7 +64,7 @@
                     <td class="table-text">${requestScope.dto.gameTwo}</td>
                     <td class="table-text">${requestScope.dto.pointTwo}</td>
                     <td class="table-text">
-                        <form method="post" action="/match-score?uuid=${requestScope.uuid}">
+                        <form method="post" action="${pageContext.request.contextPath}/match-score?uuid=${requestScope.uuid}">
                             <input type="hidden" name="playerWon" value="twoPlayerWinPoint">
                             <button type="submit" class="score-btn">Score</button>
                         </form>

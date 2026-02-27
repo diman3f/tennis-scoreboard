@@ -5,17 +5,15 @@ import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
 
 public class MatchScoreController {
 
-    private OngoingMatchesService ongoingMatchesService;
-    private MatchScoreCalculationService scoreCalculationService;
-    private FinishedMatchesPersistenceService finishedMatchesPersistenceService;
-    private ScoreDtoFormatter dtoFormatter;
+    private final OngoingMatchesService ongoingMatchesService;
+    private final MatchScoreCalculationService scoreCalculationService;
+    private final FinishedMatchesPersistenceService finishedMatchesPersistenceService;
 
     public MatchScoreController(OngoingMatchesService ongoingMatchesService, MatchScoreCalculationService scoreCalculationService,
                                 FinishedMatchesPersistenceService finishedMatchesPersistenceService) {
         this.ongoingMatchesService = ongoingMatchesService;
         this.scoreCalculationService = scoreCalculationService;
         this.finishedMatchesPersistenceService = finishedMatchesPersistenceService;
-        this.dtoFormatter = new ScoreDtoFormatter();
     }
 
     public ScoreDto addPoint(int numberPlayer, String uuid) {
@@ -26,8 +24,8 @@ public class MatchScoreController {
             scoreDto.setFinished(true);
             return scoreDto;
         }
-        ScoreDto score = updateMatch.getScore();
-        return score;
+        return updateMatch.getScore();
+
     }
 }
 

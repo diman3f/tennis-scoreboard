@@ -12,7 +12,7 @@ public class CurrentScore {
     private int setTwo;
     private int gameOne;
     private int gameTwo;
-    private String pointOne;
+   private String pointOne;
     private String pointTwo;
 
     public CurrentScore() {

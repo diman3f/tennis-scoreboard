@@ -12,8 +12,8 @@ import java.util.*;
 
 public class OngoingMatchesService {
 
-    private PlayerDao playerDao;
-    private Map<UUID, OngoingMatch> matches;
+    private final PlayerDao playerDao;
+    private final Map<UUID, OngoingMatch> matches;
 
     public OngoingMatchesService() {
         this.playerDao = ServiceLocator.getService(PlayerDao.class);

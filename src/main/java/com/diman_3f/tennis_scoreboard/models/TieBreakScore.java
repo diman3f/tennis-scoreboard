@@ -12,8 +12,8 @@ public class TieBreakScore extends GameScore<Integer> {
     @Override
     protected State pointWon(int numberPlayer) {
         setScorePlayer(numberPlayer, getScorePlayer(numberPlayer) + 1);
-        if (getScorePlayer(numberPlayer) >= MIN_POINT_FOR_WIN_TIEBREAK) { // счет больше 7 очков
-            if (getScorePlayer(numberPlayer)  - getScoreOppositePlayer(numberPlayer) >= DIFFERENT_POINT_FOR_WIN_TIEBREAK) { //разница 2 очка
+        if (getScorePlayer(numberPlayer) >= MIN_POINT_FOR_WIN_TIEBREAK) {
+            if (getScorePlayer(numberPlayer)  - getScoreOppositePlayer(numberPlayer) >= DIFFERENT_POINT_FOR_WIN_TIEBREAK) {
                 System.out.println("победа в тайбрейке!");
                 return numberPlayer == 0 ? State.PLAYER_WON_ONE : State.PLAYER_WON_TWO;
             }

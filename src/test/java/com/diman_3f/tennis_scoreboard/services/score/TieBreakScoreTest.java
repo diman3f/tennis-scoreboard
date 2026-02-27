@@ -3,8 +3,6 @@ package com.diman_3f.tennis_scoreboard.services.score;
 import com.diman_3f.tennis_scoreboard.dto.ScoreDto;
 import com.diman_3f.tennis_scoreboard.entities.Player;
 import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
-import com.diman_3f.tennis_scoreboard.services.MatchScoreCalculationService;
-import com.diman_3f.tennis_scoreboard.services.TennisRuleHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
