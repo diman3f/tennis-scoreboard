@@ -1,15 +1,14 @@
 package com.diman_3f.tennis_scoreboard.controllers;
 
 import com.diman_3f.tennis_scoreboard.context.ServiceLocator;
-
 import com.diman_3f.tennis_scoreboard.dto.NewMatchDto;
 import com.diman_3f.tennis_scoreboard.utils.JspHelper;
-import jakarta.persistence.EntityExistsException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 
@@ -29,7 +28,7 @@ public class MatchCreatorServlet extends HttpServlet {
         NewMatchDto match = ServiceLocator.getService(com.diman_3f.tennis_scoreboard.services.OngoingMatchesService.class)
                 .createCurrentMatch(dto);
         if (match.isValidDto()) {
-            String uuid = URLEncoder.encode(String.valueOf(dto.getUuid()), "UTF-8");
+            String uuid = URLEncoder.encode(String.valueOf(match.getUuid()), "UTF-8");
             String path = req.getContextPath() + "/match-score?uuid=" + uuid;
             resp.sendRedirect(path);
         } else {

@@ -10,9 +10,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../tennis-scoreboard-html-layouts-main/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/tennis-scoreboard-html-layouts-main/css/style.css">
 
-    <script src="../../tennis-scoreboard-html-layouts-main/js/app.js"></script>
+    <script src="${pageContext.request.contextPath}/tennis-scoreboard-html-layouts-main/js/app.js"></script>
 </head>
 
 <body>
@@ -20,14 +20,14 @@
     <section class="nav-header">
         <div class="brand">
             <div class="nav-toggle">
-                <img src="../../tennis-scoreboard-html-layouts-main/images/menu.png" alt="Logo" class="logo">
+                <img src="${pageContext.request.contextPath}/tennis-scoreboard-html-layouts-main/images/menu.png" alt="Logo" class="logo">
             </div>
             <span class="logo-text">${requestScope.get("id")}</span>
         </div>
         <div>
             <nav class="nav-links">
-                <a class="nav-link" href="/home">Home</a>
-                <a class="nav-link" href="/matches?page=1">Matches</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/home">Home</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/matches?page=1">Matches</a>
             </nav>
         </div>
     </section>
@@ -36,14 +36,14 @@
     <div class="container">
         <h1>Matches</h1>
         <div class="input-container">
-            <form method="GET" action="/matches">
+            <form method="GET" action="${pageContext.request.contextPath}/matches">
                 <input type="text" name="page" value="1" style="display:none" >
                 <input class="input-filter" placeholder="Filter by name" type="text" name=filter_by_player_name required/>
                 <input type="submit" style="display:none"></form>
             <div class="form-container center">
             </div>
             <div>
-                <a href="/matches?page=1">
+                <a href="${pageContext.request.contextPath}/matches?page=1">
                     <button class="btn-filter">Reset Filter</button>
                 </a>
             </div>
@@ -61,7 +61,7 @@
 
         <div class="pagination">
             <c:if test="${requestScope.currentPage != 1}">
-                <a class="prev" href="/matches?page=${requestScope.currentPage - 1}">Previous< </a>
+                <a class="prev" href="${pageContext.request.contextPath}/matches?page=${requestScope.currentPage - 1}">Previous< </a>
             </c:if>
 
             <c:forEach begin="1" end="${requestScope.noOfPage}" var="i">
@@ -70,13 +70,13 @@
                         <a class="num-page current">${i}</a>
                     </c:when>
                     <c:otherwise>
-                        <a class="num-page current" href="/matches?page=${i}">${i}</a>
+                        <a class="num-page current" href="${pageContext.request.contextPath}/matches?page=${i}">${i}</a>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
 
             <c:if test="${requestScope.currentPage lt requestScope.noOfPage}">
-                <a class="next" href="/matches?page=${requestScope.currentPage + 1}"> Next </a>
+                <a class="next" href="${pageContext.request.contextPath}/matches?page=${requestScope.currentPage + 1}"> Next </a>
             </c:if>
         </div>
     </div>

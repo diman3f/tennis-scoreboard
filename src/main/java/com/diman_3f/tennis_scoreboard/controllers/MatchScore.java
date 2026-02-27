@@ -4,7 +4,10 @@ import com.diman_3f.tennis_scoreboard.context.ServiceLocator;
 import com.diman_3f.tennis_scoreboard.dao.JPAMatchDao;
 import com.diman_3f.tennis_scoreboard.dto.ScoreDto;
 import com.diman_3f.tennis_scoreboard.models.OngoingMatch;
-import com.diman_3f.tennis_scoreboard.services.*;
+import com.diman_3f.tennis_scoreboard.services.FinishedMatchesPersistenceService;
+import com.diman_3f.tennis_scoreboard.services.MatchScoreCalculationService;
+import com.diman_3f.tennis_scoreboard.services.MatchScoreController;
+import com.diman_3f.tennis_scoreboard.services.OngoingMatchesService;
 import com.diman_3f.tennis_scoreboard.utils.JspHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,9 +22,9 @@ public class MatchScore extends HttpServlet {
     private MatchScoreController controller;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         OngoingMatchesService matchesService = ServiceLocator.getService(OngoingMatchesService.class);
-        MatchScoreCalculationService calculationService = new MatchScoreCalculationService(ServiceLocator.getService(TennisRuleHandler.class));
+        MatchScoreCalculationService calculationService = new MatchScoreCalculationService();
         FinishedMatchesPersistenceService finishedService = new FinishedMatchesPersistenceService(ServiceLocator.getService(JPAMatchDao.class));
         this.controller = new MatchScoreController(matchesService, calculationService, finishedService);
     }
@@ -32,8 +35,8 @@ public class MatchScore extends HttpServlet {
         req.setAttribute("uuid", uuid);
         OngoingMatchesService service = ServiceLocator.getService(OngoingMatchesService.class);
         OngoingMatch match = service.getMatch(uuid);
-        ScoreDtoFormatter dtoFormatter = new ScoreDtoFormatter();
-        req.setAttribute("dto", dtoFormatter.createDto(match));
+        ScoreDto dto = match.getScore();
+        req.setAttribute("dto", dto);
         getServletContext().getRequestDispatcher(JspHelper.getPath("matchScore"))
                 .forward(req, resp);
     }
@@ -41,15 +44,20 @@ public class MatchScore extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String page;
-        String pageMatchScore = "matchScore";
-        String playerId = req.getParameter("playerId");
+        String playerWon = req.getParameter("playerWon");
+        int numberWonPlayer = 0;
+        if (playerWon.equals("twoPlayerWinPoint")) {
+            numberWonPlayer = 1;
+        }
         String uuid = req.getParameter("uuid");
         req.setAttribute("uuid", uuid);
-        ScoreDto score = controller.addPoint(playerId, uuid);
+        ScoreDto score = controller.addPoint(numberWonPlayer, uuid);
         req.setAttribute("dto", score);
-        if (score.isFinishedMatch()) {
-            page = "matchFinished";
-        } else page = "matchScore";
+        if (score.isFinished()) {
+            page = "index";
+        } else {
+            page = "matchScore";
+        }
         getServletContext().getRequestDispatcher(JspHelper.getPath(page)).
                 forward(req, resp);
     }

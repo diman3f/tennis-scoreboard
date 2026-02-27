@@ -1,6 +1,5 @@
 package com.diman_3f.tennis_scoreboard.context;
 
-import com.diman_3f.tennis_scoreboard.exception.InternalServerError;
 import com.diman_3f.tennis_scoreboard.exception.ValidationException;
 import com.diman_3f.tennis_scoreboard.utils.JspHelper;
 import jakarta.persistence.EntityExistsException;
@@ -29,7 +28,7 @@ public class ExceptionHandlerFilter extends HttpFilter {
                 req.setAttribute("error", HttpStatus.BAD_REQUEST);
                 req.setAttribute("message", e.getMessage());
                 forwardToErrorPage("new-match", req, res);
-            } else if (e instanceof InternalServerError) {
+            } else {
                 req.setAttribute("error", HttpStatus.INTERNAL_SERVER_ERROR);
                 req.setAttribute("message", e.getMessage());
                 forwardToErrorPage("error", req, res);
@@ -39,6 +38,4 @@ public class ExceptionHandlerFilter extends HttpFilter {
     private void forwardToErrorPage(String page,HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         req.getServletContext().getRequestDispatcher(JspHelper.getPath(page)).forward(req,res);
     }
-
-
 }
