@@ -45,7 +45,7 @@ public class SetScore extends Score<Integer> {
     private State gameWon(int playerNumber) {
         Integer scorePlayer = getScorePlayer(playerNumber);
         Integer scoreOppositePlayer = getScoreOppositePlayer(playerNumber);
-        if (scorePlayer == MIN_GAME_WIN_SET || scoreOppositePlayer == MIN_GAME_WIN_SET) {
+        if (scorePlayer >= MIN_GAME_WIN_SET || scoreOppositePlayer >= MIN_GAME_WIN_SET) {
             if (scorePlayer - scoreOppositePlayer >= MIN_DIFFERENT_GAME_WIN_SET) {
                 return State.PLAYER_WON_ONE;
             } else if (scoreOppositePlayer - scorePlayer >= MIN_DIFFERENT_GAME_WIN_SET) {

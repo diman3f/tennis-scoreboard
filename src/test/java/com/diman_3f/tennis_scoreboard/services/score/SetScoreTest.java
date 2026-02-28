@@ -52,6 +52,16 @@ public class SetScoreTest {
         match.upPointPlayer(INDEX_ONE_PLAYER);
         Assertions.assertEquals(true, match.isMatchFinished());
     }
+    @Test
+    public void shouldOnePlayerWonSet_WhenScoreFiveFiveAndOnePlayerWonGameTwoValue(){
+        setScoreFiveGamePlayer(INDEX_ONE_PLAYER);
+        setScoreFiveGamePlayer(INDEX_OPPOSITE_PLAYER);
+        for (int i = 0; i < 8; i++) {
+            match.upPointPlayer(INDEX_ONE_PLAYER);
+        }
+        ScoreDto score = match.getScore();
+        Assertions.assertEquals(score.getSetOne(),1);
+    }
 
     private void setScoreFiveGameAndFortyPointPlayer(int indexPlayer) {
         for (int i = 0; i < 23; i++) {
@@ -60,7 +70,7 @@ public class SetScoreTest {
     }
 
     private void setScoreFiveGamePlayer(int indexPlayer) {
-        for (int i = 0; i < 18; i++) {
+        for (int i = 0; i < 20; i++) {
             match.upPointPlayer(indexPlayer);
         }
     }
