@@ -1,4 +1,9 @@
-Вёрстка для проекта "Табло теннисного матча" из моего Java роадмапа
+Проект теннисное табло для подсчета очков в теннисном матче.
+    Проект написан с применением: Java Core, Servlet Hibernate, H2, Jsp, Jstl
 
-- ТЗ проекта - https://zhukovsd.github.io/java-backend-learning-course/projects/tennis-scoreboard/
-- Роадмап - https://zhukovsd.github.io/java-backend-learning-course/
+Для возможности локального запуска необходимо: 
+- Выполнить git clone репозитория
+- В Maven проекте выполнить команду package для сборки war архива
+- Разместить war архив в папке webapps Tomcat 
+Доступ к приложение будет доступен по адресу:
+  http://localhost:8080/"наименование war архива"/home
