@@ -28,9 +28,10 @@ public class ExceptionHandlerFilter extends HttpFilter {
                 req.setAttribute("error", HttpStatus.BAD_REQUEST);
                 req.setAttribute("message", e.getMessage());
                 forwardToErrorPage("new-match", req, res);
-            } else {
+            }
+            else {
                 req.setAttribute("error", HttpStatus.INTERNAL_SERVER_ERROR);
-                req.setAttribute("message", e.getMessage());
+                req.setAttribute("message", "Извините, ошибка на стороне сервера, скоро починим!");
                 forwardToErrorPage("error", req, res);
             }
         }

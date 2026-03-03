@@ -7,8 +7,8 @@
     <title>Exception</title>
 </head>
 <body>
-<h1>Ошибка 404</h1>
-<p>К сожалению, запрашиваемый ресурс не найден.</p>
-<a href="${pageContext.request.contextPath}/home">Вернуться на главную</a>
+<h1>Страница обработки ошибки</h1>
+<p>Указанный ресурс не найден.</p>
+<a href="${pageContext.request.contextPath}/home">Вернуться на главную страницу</a>
 </body>
 </html>
