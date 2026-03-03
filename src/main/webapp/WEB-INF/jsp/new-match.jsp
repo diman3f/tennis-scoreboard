@@ -35,6 +35,7 @@
         <div>
             <h1>Start new match</h1>
             <div class="new-match-image"></div>
+
             <div class="form-container center">
                 <form method="post" action="${pageContext.request.contextPath}/new-match">
                     <%--@declare id="playerone"--%><%--@declare id="playertwo"--%><p style="color: #ff0000;">
