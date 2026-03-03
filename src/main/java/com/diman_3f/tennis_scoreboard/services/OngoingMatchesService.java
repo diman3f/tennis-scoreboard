@@ -25,25 +25,27 @@ public class OngoingMatchesService {
         String namePlayerTwo = dto.getNameTwoPlayer();
 
         if (!(Validator.isValidName(namePlayerOne))) {
-            throw new ValidationException(String.format("Invalid name: %s. Name must contain only letters and begin with a capital letter", namePlayerOne));
+            throw new ValidationException(String.format("Ошибка ввода: %s. Имя должно состоять только из букв и начинаться с заглавной буквы", namePlayerOne));
         }
         if (!(Validator.isValidName(namePlayerTwo))) {
-            throw new ValidationException(String.format("Invalid name: %s. Name must contain only letters and begin with a capital letter", namePlayerTwo));
+            throw new ValidationException(String.format("Ошибка ввода: %s. Имя должно состоять только из букв и начинаться с заглавной буквы", namePlayerTwo));
         }
         if (!Validator.isValidLength(namePlayerOne)) {
-            dto.saveErrors("lengthOne", "The name must not exceed 15 characters");
+            dto.saveErrors("lengthOne", "Длина имени не должно привышать 15 символов");
         }
         if (!Validator.isValidLength(namePlayerTwo)) {
-            dto.saveErrors("lengthTwo", "The name must not exceed 15 characters");
+            dto.saveErrors("lengthTwo", "Длина имени не должно привышать 15 символов");
         }
 
         Optional<Player> onePlayer = playerDao.findByName(namePlayerOne);
+
         if (!onePlayer.isPresent()) {
             onePlayer = Optional.of(playerDao.save(new Player(namePlayerOne)));
         }
-
-        Optional<Player>  twoPlayer = Optional.of(playerDao.save(new Player(namePlayerTwo)));
-
+        Optional<Player> twoPlayer = playerDao.findByName(namePlayerTwo);
+        if(!twoPlayer.isPresent()) {
+            twoPlayer = Optional.of(playerDao.save(new Player(namePlayerTwo)));
+        }
         UUID uuid = UUID.randomUUID();
         Player playerOne = onePlayer.get();
         Player playerTwo = twoPlayer.get();

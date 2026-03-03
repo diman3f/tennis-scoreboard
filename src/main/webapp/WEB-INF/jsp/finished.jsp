@@ -1,4 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,15 +50,20 @@
                 <tr class="player1">
                     <td class="table-text">${requestScope.dto.playerOneName}</td>
                     <td class="table-text">${requestScope.dto.setOne}</td>
+                    <td class="table-text">
+                        <c:if test="${requestScope.dto.winner.equals(requestScope.dto.playerOneName)}">
+                            <div class="cup-finished"></div>
+                        </c:if>
+                    </td>
                 </tr>
                 <tr class="player2">
                     <td class="table-text">${requestScope.dto.playerTwoName}</td>
                     <td class="table-text">${requestScope.dto.setTwo}</td>
-                </tr>
-                <tr class="winner">
-                    <td class="table-text">&nbsp;</td>   <!-- неразрывный пробел -->
-                    <td class="table-text">&nbsp;</td>
-                    <td class="table-text">${requestScope.dto.nameWinner}</td>
+                    <td class="table-text">
+                        <c:if test="${requestScope.dto.winner.equals(requestScope.dto.playerTwoName)}">
+                            <div class="cup-finished"></div>
+                        </c:if>
+                    </td>
                 </tr>
                 </tbody>
             </table>

@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum HttpStatus {
     NOT_FOUND(404,"Not found"),
-    BAD_REQUEST (404,"Bad Request"),
+    BAD_REQUEST (400,"Bad Request"),
     INTERNAL_SERVER_ERROR (500, "Internal Server Error"),
     UNKNOWN(-1, "Unknown Status");
 

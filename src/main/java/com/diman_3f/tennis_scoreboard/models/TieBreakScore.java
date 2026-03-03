@@ -14,7 +14,6 @@ public class TieBreakScore extends GameScore<Integer> {
         setScorePlayer(numberPlayer, getScorePlayer(numberPlayer) + 1);
         if (getScorePlayer(numberPlayer) >= MIN_POINT_FOR_WIN_TIEBREAK) {
             if (getScorePlayer(numberPlayer)  - getScoreOppositePlayer(numberPlayer) >= DIFFERENT_POINT_FOR_WIN_TIEBREAK) {
-                System.out.println("победа в тайбрейке!");
                 return numberPlayer == 0 ? State.PLAYER_WON_ONE : State.PLAYER_WON_TWO;
             }
         }

@@ -20,12 +20,11 @@ public class MatchScoreController {
         OngoingMatch updateMatch = scoreCalculationService.upPoint(numberPlayer, ongoingMatchesService.getMatch(uuid));
         if (updateMatch.isMatchFinished()) {
             finishedMatchesPersistenceService.saveMatch(updateMatch);
-            ScoreDto scoreDto = new ScoreDto();
-            scoreDto.setFinished(true);
-            return scoreDto;
+            return new ScoreDto(updateMatch.getPlayerOne().getName(),updateMatch.getPlayerTwo().getName(),
+                    updateMatch.getSetOnePlayer(), updateMatch.getSetTwoPlayer(),updateMatch.isMatchFinished(),
+                    updateMatch.getWinner().getName());
         }
         return updateMatch.getScore();
-
     }
 }
 

@@ -61,11 +61,11 @@ public class OngoingMatch {
 
     private void defineWinnerMatch(State state) {
         if (state.equals(State.PLAYER_WON_ONE)) {
-            this.winner = playerOne;
-            this.matchFinished = true;
+            winner = playerOne;
+            matchFinished = true;
         } else if (state.equals(State.PLAYER_WON_TWO)) {
-            this.winner = playerTwo;
-            this.matchFinished = true;
+            winner = playerTwo;
+            matchFinished = true;
         }
     }
 

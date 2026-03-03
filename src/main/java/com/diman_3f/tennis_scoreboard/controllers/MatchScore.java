@@ -54,7 +54,7 @@ public class MatchScore extends HttpServlet {
         ScoreDto score = controller.addPoint(numberWonPlayer, uuid);
         req.setAttribute("dto", score);
         if (score.isFinished()) {
-            page = "index";
+            page = "finished";
         } else {
             page = "matchScore";
         }

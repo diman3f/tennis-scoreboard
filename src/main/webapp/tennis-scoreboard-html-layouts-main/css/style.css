@@ -131,6 +131,8 @@ footer {
     background-size: cover;
 }
 
+
+
 .view-results, .start-match {
     border-radius: 23px;
     cursor: pointer;
@@ -164,6 +166,16 @@ footer {
     margin: 20px 0;
     background-image: url('../images/racket.png');
     height: 503px;
+    background-size: cover;
+    background-position: center;
+}
+
+.cup-finished {
+    display: inline-block;
+    border-radius: 30px;
+    background-image: url('../images/cup.png');
+    width: 10mm;
+    height: 10mm;
     background-size: cover;
     background-position: center;
 }
