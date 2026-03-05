@@ -9,6 +9,6 @@
 <body>
 <h1>Страница обработки ошибки</h1>
 <p>Указанный ресурс не найден.</p>
-<a href="${pageContext.request.contextPath}/home">Вернуться на главную страницу</a>
+<a href="${pageContext.request.contextPath}/">Вернуться на главную страницу</a>
 </body>
 </html>
