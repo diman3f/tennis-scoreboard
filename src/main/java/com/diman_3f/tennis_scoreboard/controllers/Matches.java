@@ -15,7 +15,7 @@ import java.util.List;
 
 @WebServlet(name = "matches", urlPatterns = "/matches")
 public class Matches extends HttpServlet {
-    private static final int RECORD_PAGE = 5;
+    private static final int RECORD_PAGE = 3;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
