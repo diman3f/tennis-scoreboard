@@ -15,21 +15,22 @@ import java.util.List;
 
 @WebServlet(name = "matches", urlPatterns = "/matches")
 public class Matches extends HttpServlet {
+    private static final int RECORD_PAGE = 3;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int recordPage = 5;
+
         JPAMatchDao service = ServiceLocator.getService(JPAMatchDao.class);
         String page = req.getParameter("page");
         int currentPage = Integer.parseInt(page);
-        int offset = (currentPage - 1) * recordPage;
-        List<MatchResultDto> matches = service.getMatchWithOffSet(offset, recordPage);
+        int offset = (currentPage - 1) * RECORD_PAGE;
+        List<MatchResultDto> matches = service.getMatchWithOffSet(offset, RECORD_PAGE);
         int noOfRecords = service.count();
         if (req.getParameter("filter_by_player_name") != null) {
             matches = service.findByName(req.getParameter("filter_by_player_name"));
             noOfRecords = matches.size();
         }
-        int noOfPage = (int) Math.ceil(noOfRecords * 1.0) / recordPage;
+        int noOfPage = (int) Math.ceil(noOfRecords * 1.0) / RECORD_PAGE;
         req.setAttribute("matches", matches);
         req.setAttribute("currentPage", currentPage);
         req.setAttribute("noOfPage", noOfPage);

@@ -1,11 +1,7 @@
 package com.diman_3f.tennis_scoreboard.controllers;
 
 import com.diman_3f.tennis_scoreboard.context.ServiceLocator;
-import com.diman_3f.tennis_scoreboard.dao.JPAMatchDao;
 import com.diman_3f.tennis_scoreboard.dto.NewMatchDto;
-import com.diman_3f.tennis_scoreboard.services.FinishedMatchesPersistenceService;
-import com.diman_3f.tennis_scoreboard.services.MatchScoreCalculationService;
-import com.diman_3f.tennis_scoreboard.services.MatchScoreController;
 import com.diman_3f.tennis_scoreboard.services.OngoingMatchesService;
 import com.diman_3f.tennis_scoreboard.utils.JspHelper;
 import jakarta.servlet.ServletException;
@@ -38,7 +34,7 @@ public class MatchCreatorServlet extends HttpServlet {
         String playerNameOne = req.getParameter("nameOne");
         String playerNameTwo = req.getParameter("nameTwo");
         NewMatchDto dto = new NewMatchDto(playerNameOne, playerNameTwo);
-        NewMatchDto match = matchesService.createCurrentMatch(dto); // в этом месте вылетает експешнен при вставке существующего плейра
+        NewMatchDto match = matchesService.createCurrentMatch(dto);
         if (match.isValidDto()) {
             String uuid = URLEncoder.encode(String.valueOf(match.getUuid()), "UTF-8");
             String path = req.getContextPath() + "/match-score?uuid=" + uuid;
